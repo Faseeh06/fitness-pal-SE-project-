@@ -1,11 +1,13 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Flame, Timer } from "lucide-react"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   WORKOUT_CATALOG,
   type WorkoutCategory,
@@ -13,45 +15,75 @@ import {
   getWorkoutSessions,
 } from "@/lib/fitpal-workouts"
 
-function CategoryBlock({
-  title,
-  category,
-}: {
-  title: string
-  category: WorkoutCategory
-}) {
-  const items = WORKOUT_CATALOG.filter((w) => w.category === category)
+function WorkoutTile({ workoutId }: { workoutId: string }) {
+  const w = WORKOUT_CATALOG.find((x) => x.id === workoutId)
+  if (!w) return null
   return (
-    <div>
-      <div className="flex items-baseline justify-between gap-4 mb-6">
-        <h2 className="text-lg font-light tracking-tight">{title}</h2>
-        <span className="text-[11px] tracking-[0.15em] uppercase text-muted-foreground">
-          {items.length} plans
-        </span>
-      </div>
-      <div className="grid gap-px bg-border border border-border">
-        {items.map((w) => (
-          <Link
-            key={w.id}
-            href={`/dashboard/workouts/${w.id}`}
-            className="group flex items-start justify-between gap-6 bg-background p-6 md:p-8 hover:bg-secondary/40 transition-colors"
+    <Link
+      href={`/dashboard/workouts/${w.id}`}
+      className="group relative overflow-hidden border border-border bg-background text-left shadow-none outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background"
+    >
+      <div className="relative aspect-[16/11] overflow-hidden bg-muted">
+        {/* Native img avoids intermittent Next/Image remote fetch issues for Unsplash. */}
+        <img
+          src={w.imageUrl}
+          alt=""
+          width={640}
+          height={440}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent opacity-95 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+          <Badge
+            variant="secondary"
+            className="rounded-none text-[10px] uppercase tracking-wide bg-background/90 backdrop-blur-sm border border-border/60"
           >
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2 mb-2">
-                <h3 className="text-base font-light tracking-tight text-foreground">{w.name}</h3>
-                <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-wide">
-                  {w.category}
-                </Badge>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                {w.description}
-              </p>
-              <p className="text-[11px] text-muted-foreground/80 mt-3 tracking-wide">
-                Suggested {w.defaultDurationMinutes} min · ~{w.defaultCaloriesBurned} kcal
-              </p>
-            </div>
-            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/40 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all mt-1" />
-          </Link>
+            {w.category}
+          </Badge>
+        </div>
+        <ArrowUpRight className="absolute right-4 top-4 h-4 w-4 text-background/90 drop-shadow md:text-foreground/70 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 pointer-events-none" />
+      </div>
+      <div className="p-6 md:p-7 space-y-3 border-t border-border bg-card/40 backdrop-blur-[2px]">
+        <h3 className="text-lg font-light tracking-tight text-foreground leading-snug">{w.name}</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{w.description}</p>
+        <div className="flex flex-wrap gap-4 pt-1 text-[11px] uppercase tracking-wide text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <Timer className="h-3.5 w-3.5" />
+            {w.defaultDurationMinutes} min
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Flame className="h-3.5 w-3.5" />
+            ~{w.defaultCaloriesBurned} kcal
+          </span>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+function CategoryPlans({ category }: { category: WorkoutCategory }) {
+  const ids = WORKOUT_CATALOG.filter((w) => w.category === category).map((w) => w.id)
+  const blurb =
+    category === "cardio"
+      ? "Intervals, steady-state, and machines that elevate heart rate — open a tile to see the full brief and log your session."
+      : "Compound lifts and controlled tension — log honest duration and calories when you finish."
+
+  return (
+    <div className="space-y-8">
+      <div className="max-w-2xl space-y-3">
+        <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-[0.2em]">
+          {category}
+        </Badge>
+        <p className="text-sm text-muted-foreground leading-relaxed">{blurb}</p>
+        <p className="text-[11px] tracking-[0.15em] uppercase text-muted-foreground">
+          {ids.length} curated plans
+        </p>
+      </div>
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {ids.map((id) => (
+          <WorkoutTile key={id} workoutId={id} />
         ))}
       </div>
     </div>
@@ -66,60 +98,147 @@ export default function WorkoutsPage() {
 
   return (
     <div>
-      <p className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground mb-3">Module</p>
-      <h1 className="text-3xl md:text-4xl font-extralight tracking-tight text-balance mb-3">
-        Workouts
-      </h1>
-      <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
-        Browse cardio and strength sessions, open a plan, then log duration and calories when you
-        finish. History stays in this browser.
-      </p>
+      <section className="relative overflow-hidden border border-border -mx-6 md:-mx-10 lg:-mx-12 mb-10 bg-muted/15">
+        <div className="relative h-[160px] md:h-[200px]">
+          <Image
+            src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1800&q=82"
+            alt=""
+            fill
+            className="object-cover object-[center_35%]"
+            sizes="100vw"
+            priority
+            unoptimized
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
+          <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-10 lg:px-12">
+            <p className="text-[11px] tracking-[0.32em] uppercase text-muted-foreground mb-2">
+              Module
+            </p>
+            <h1 className="text-2xl md:text-4xl font-extralight tracking-tight text-balance">
+              Workouts
+            </h1>
+            <p className="text-sm text-muted-foreground mt-3 max-w-2xl leading-relaxed">
+              Switch between cardio and strength — only one category shows at a time so the page
+              stays calm. Tiles use your logged sessions to feed dashboard charts.
+            </p>
+          </div>
+        </div>
+      </section>
 
-      <div className="mt-14 space-y-16">
-        <CategoryBlock title="Cardio" category="cardio" />
-        <CategoryBlock title="Strength" category="strength" />
-      </div>
+      <Tabs defaultValue="cardio" className="w-full">
+        <TabsList className="h-auto w-full flex flex-wrap sm:flex-nowrap rounded-none border border-border bg-muted/40 p-0 gap-px">
+          <TabsTrigger
+            value="cardio"
+            className="flex-1 rounded-none py-3.5 px-4 text-[11px] uppercase tracking-[0.2em] data-[state=active]:bg-background data-[state=active]:shadow-none"
+          >
+            Cardio
+          </TabsTrigger>
+          <TabsTrigger
+            value="strength"
+            className="flex-1 rounded-none py-3.5 px-4 text-[11px] uppercase tracking-[0.2em] data-[state=active]:bg-background data-[state=active]:shadow-none"
+          >
+            Strength
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="cardio" className="mt-8 focus-visible:outline-none">
+          <CategoryPlans category="cardio" />
+        </TabsContent>
+        <TabsContent value="strength" className="mt-8 focus-visible:outline-none">
+          <CategoryPlans category="strength" />
+        </TabsContent>
+      </Tabs>
 
-      <Separator className="my-16" />
+      <Separator className="my-14 md:my-16" />
 
       <div>
-        <div className="flex items-end justify-between gap-4 mb-6">
-          <h2 className="text-lg font-light tracking-tight">Recent history</h2>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+          <div>
+            <p className="text-[11px] tracking-[0.28em] uppercase text-muted-foreground mb-2">
+              History
+            </p>
+            <h2 className="text-2xl md:text-3xl font-extralight tracking-tight">Recent completions</h2>
+          </div>
           <span className="text-[11px] tracking-[0.15em] uppercase text-muted-foreground">
-            Newest first
+            Newest first · kept locally
           </span>
         </div>
         {history.length === 0 ? (
-          <p className="text-sm text-muted-foreground border border-dashed border-border px-6 py-10 text-center">
-            No completed workouts yet. Finish a session from a plan above to build your log.
-          </p>
+          <div className="relative overflow-hidden border border-dashed border-border">
+            <img
+              src="https://images.unsplash.com/photo-1599058945527-39ce67bee916?auto=format&fit=crop&w=1200&q=82"
+              alt=""
+              className="w-full h-48 object-cover opacity-40 grayscale"
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-background/75 backdrop-blur-[1px] px-6">
+              <p className="text-sm text-muted-foreground text-center max-w-md leading-relaxed">
+                No completions yet — pick a plan in a tab above, tap{" "}
+                <span className="text-foreground">Start workout</span>, then save your session.
+              </p>
+            </div>
+          </div>
         ) : (
-          <div className="divide-y divide-border border border-border">
+          <ul className="grid gap-4 md:grid-cols-2">
             {history.map((row) => {
               const def = getWorkoutById(row.workoutId)
+              const thumb = def?.imageUrl
               return (
-                <div
+                <li
                   key={row.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-background px-6 py-5"
+                  className="flex gap-0 border border-border bg-background overflow-hidden group"
                 >
-                  <div>
-                    <p className="text-sm font-medium text-foreground">
-                      {def?.name ?? "Workout"}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
+                  <Link
+                    href={def ? `/dashboard/workouts/${def.id}` : "/dashboard/workouts"}
+                    className="relative w-[112px] shrink-0 hidden sm:block self-stretch min-h-[120px] bg-muted"
+                  >
+                    {thumb ? (
+                      <>
+                        <img
+                          src={thumb}
+                          alt=""
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-foreground/15 group-hover:bg-transparent transition-colors" />
+                      </>
+                    ) : null}
+                  </Link>
+                  <div className="flex flex-1 flex-col justify-center gap-2 px-5 py-5 sm:py-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-sm font-medium text-foreground">{def?.name ?? "Workout"}</p>
+                      {def ? (
+                        <Badge variant="outline" className="rounded-none text-[10px] uppercase">
+                          {def.category}
+                        </Badge>
+                      ) : null}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
                       {new Date(row.completedAt).toLocaleString(undefined, {
                         dateStyle: "medium",
                         timeStyle: "short",
                       })}
                     </p>
+                    <div className="flex flex-wrap gap-3 text-xs text-muted-foreground uppercase tracking-wide">
+                      <span className="inline-flex items-center gap-1 tabular-nums">
+                        <Timer className="h-3 w-3" />
+                        {row.durationMinutes} min
+                      </span>
+                      <span className="inline-flex items-center gap-1 tabular-nums">
+                        <Flame className="h-3 w-3" />
+                        {row.caloriesBurned} kcal
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-sm text-muted-foreground tabular-nums sm:text-right">
-                    {row.durationMinutes} min · {row.caloriesBurned} kcal
-                  </div>
-                </div>
+                  <Link
+                    href={def ? `/dashboard/workouts/${def.id}` : "/dashboard/workouts"}
+                    className="hidden md:flex items-center px-4 border-l border-border text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Open workout"
+                  >
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </li>
               )
             })}
-          </div>
+          </ul>
         )}
       </div>
     </div>

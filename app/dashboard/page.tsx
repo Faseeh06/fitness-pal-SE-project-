@@ -1,8 +1,10 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Dumbbell } from "lucide-react"
 
+import { DashboardAnalyticsCharts } from "@/components/dashboard/dashboard-analytics-charts"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -22,90 +24,99 @@ export default function DashboardHomePage() {
 
   return (
     <div>
-      <p className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground mb-3">
-        Dashboard
-      </p>
-      <h1 className="text-3xl md:text-4xl font-extralight tracking-tight text-balance">
-        Hello, {user.name}
-      </h1>
-      <p className="text-sm text-muted-foreground mt-3 max-w-2xl leading-relaxed">
-        Daily snapshot and weekly roll-up from your logged workouts and step estimates (demo
-        localStorage).
-      </p>
+      <section className="relative overflow-hidden border border-border bg-card/40 -mx-6 md:-mx-10 lg:-mx-12 mb-12">
+        <div className="relative h-[200px] md:h-[240px]">
+          <Image
+            src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1600&q=80"
+            alt=""
+            fill
+            className="object-cover object-center opacity-95"
+            sizes="(max-width: 768px) 100vw, 896px"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/25" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_transparent_20%,_hsl(var(--background))_75%)] opacity-90" />
+          <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-10 lg:p-12">
+            <p className="text-[11px] tracking-[0.32em] uppercase text-muted-foreground mb-2">
+              Dashboard
+            </p>
+            <h1 className="text-3xl md:text-[2.65rem] font-extralight tracking-tight text-balance max-w-2xl">
+              Hello, {user.name}
+            </h1>
+            <p className="text-sm text-muted-foreground mt-3 max-w-xl leading-relaxed">
+              Visual summaries below sync from workouts you log — steps blend seeded baselines with
+              session estimates for this demo.
+            </p>
+          </div>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border mt-12 border border-border">
-        <div className="bg-background p-6 md:p-8">
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
+        <div className="bg-background p-5 md:p-7">
+          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
             Today · Steps
           </p>
-          <p className="text-3xl md:text-4xl font-extralight tabular-nums">
+          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {today.steps.toLocaleString()}
           </p>
-        </div>
-        <div className="bg-background p-6 md:p-8">
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-4">
-            Today · Calories burned
+          <div className="mt-4 h-1 bg-secondary overflow-hidden">
+            <div
+              className="h-full bg-foreground/80 transition-all"
+              style={{
+                width: `${Math.min(100, Math.round((today.steps / 12000) * 100))}%`,
+              }}
+            />
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-2 uppercase tracking-wide">
+            vs demo 12k pacing
           </p>
-          <p className="text-3xl md:text-4xl font-extralight tabular-nums">
+        </div>
+        <div className="bg-background p-5 md:p-7">
+          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
+            Today · Burn
+          </p>
+          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {today.caloriesBurned}
+            <span className="text-sm text-muted-foreground ml-1 font-normal">kcal</span>
+          </p>
+          <div className="mt-4 h-1 bg-secondary overflow-hidden">
+            <div
+              className="h-full bg-foreground/60 transition-all"
+              style={{
+                width: `${Math.min(100, Math.round((today.caloriesBurned / 600) * 100))}%`,
+              }}
+            />
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-2 uppercase tracking-wide">
+            vs demo 600 kcal day
           </p>
         </div>
-        <div className="bg-background p-6 md:p-8">
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-4">
-            Week · Calories burned
+        <div className="bg-background p-5 md:p-7">
+          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
+            Week · Burn
           </p>
-          <p className="text-3xl md:text-4xl font-extralight tabular-nums">
+          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {week.totalCaloriesBurned}
           </p>
-        </div>
-        <div className="bg-background p-6 md:p-8">
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-4">
-            Week · Workouts
+          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">
+            Rolling 7-day sum from completed workouts.
           </p>
-          <p className="text-3xl md:text-4xl font-extralight tabular-nums">
+        </div>
+        <div className="bg-background p-5 md:p-7">
+          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
+            Week · Sessions
+          </p>
+          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {week.workoutsCompleted}
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">
+            Every completion feeds your charts automatically.
           </p>
         </div>
       </div>
 
-      <div className="mt-14">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6">
-          <div>
-            <p className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground mb-2">
-              Last 7 days
-            </p>
-            <h2 className="text-xl md:text-2xl font-extralight tracking-tight">Weekly rhythm</h2>
-          </div>
-          <p className="text-xs text-muted-foreground max-w-md leading-relaxed">
-            Bars show calories burned from completed sessions per day. Steps combine baseline
-            entries and workout-based estimates.
-          </p>
-        </div>
-        <div className="flex items-end gap-2 md:gap-3 h-40 border border-border px-4 pt-4 pb-2 bg-card/40">
-          {week.days.map((d) => {
-            const max = Math.max(...week.days.map((x) => x.caloriesBurned), 1)
-            const h = Math.round((d.caloriesBurned / max) * 100)
-            const isToday = d.day === todayKey
-            return (
-              <div key={d.day} className="flex-1 flex flex-col items-center gap-2 min-w-0">
-                <div className="w-full flex flex-col justify-end h-28 bg-secondary/40 border border-border/60">
-                  <div
-                    className={`w-full transition-all ${isToday ? "bg-foreground" : "bg-foreground/70"}`}
-                    style={{ height: `${Math.max(h, 4)}%` }}
-                    title={`${d.caloriesBurned} kcal`}
-                  />
-                </div>
-                <span
-                  className={`text-[10px] uppercase tracking-tight truncate w-full text-center ${
-                    isToday ? "text-foreground" : "text-muted-foreground"
-                  }`}
-                >
-                  {d.day.slice(5)}
-                </span>
-              </div>
-            )
-          })}
-        </div>
+      <div className="mt-10">
+        <DashboardAnalyticsCharts userId={user.id} />
       </div>
 
       <Separator className="my-14" />
@@ -118,7 +129,7 @@ export default function DashboardHomePage() {
           <Button asChild className="rounded-none gap-2">
             <Link href="/dashboard/workouts">
               <Dumbbell className="h-4 w-4" />
-              Start a workout
+              Browse workouts
               <ArrowRight className="h-4 w-4 opacity-60" />
             </Link>
           </Button>

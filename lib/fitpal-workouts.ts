@@ -9,7 +9,13 @@ export type WorkoutDefinition = {
   description: string
   defaultDurationMinutes: number
   defaultCaloriesBurned: number
+  /** Cover image for cards and detail hero (Unsplash). */
+  imageUrl: string
 }
+
+/** Stable Unsplash URLs (`auto=format` helps avoid broken loads across environments). */
+const u = (photoId: string, w: number) =>
+  `https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=${w}&q=82`
 
 export const WORKOUT_CATALOG: WorkoutDefinition[] = [
   {
@@ -19,6 +25,7 @@ export const WORKOUT_CATALOG: WorkoutDefinition[] = [
     description: "Steady aerobic pace — conversational intensity.",
     defaultDurationMinutes: 30,
     defaultCaloriesBurned: 280,
+    imageUrl: u("photo-1571019614242-c5c5dee9f50b", 1200),
   },
   {
     id: "hiit-core",
@@ -27,6 +34,7 @@ export const WORKOUT_CATALOG: WorkoutDefinition[] = [
     description: "Short work intervals with brief recovery windows.",
     defaultDurationMinutes: 25,
     defaultCaloriesBurned: 320,
+    imageUrl: u("photo-1517836357463-d25dfeac3438", 1200),
   },
   {
     id: "row-steady",
@@ -35,6 +43,7 @@ export const WORKOUT_CATALOG: WorkoutDefinition[] = [
     description: "Consistent stroke rate and even splits.",
     defaultDurationMinutes: 35,
     defaultCaloriesBurned: 300,
+    imageUrl: u("photo-1576678927484-cc907957088c", 1200),
   },
   {
     id: "upper-push",
@@ -43,6 +52,7 @@ export const WORKOUT_CATALOG: WorkoutDefinition[] = [
     description: "Pressing patterns with controlled tempo.",
     defaultDurationMinutes: 45,
     defaultCaloriesBurned: 220,
+    imageUrl: u("photo-1581009146145-b5ef050c2e1e", 1200),
   },
   {
     id: "lower-compound",
@@ -51,6 +61,7 @@ export const WORKOUT_CATALOG: WorkoutDefinition[] = [
     description: "Squat and hinge emphasis — full range.",
     defaultDurationMinutes: 50,
     defaultCaloriesBurned: 260,
+    imageUrl: u("photo-1434682881908-b43fa046c57b", 1200),
   },
   {
     id: "full-body",
@@ -59,6 +70,7 @@ export const WORKOUT_CATALOG: WorkoutDefinition[] = [
     description: "Compound lifts covering major patterns.",
     defaultDurationMinutes: 40,
     defaultCaloriesBurned: 240,
+    imageUrl: u("photo-1534438327276-14e5300c3a48", 1200),
   },
 ]
 
