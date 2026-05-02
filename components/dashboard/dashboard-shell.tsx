@@ -29,7 +29,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import type { FitPalSessionUser } from "@/lib/fitpal-auth"
-import { getSession, signOut } from "@/lib/fitpal-auth"
+import { FITPAL_SESSION_UPDATED_EVENT, getSession, signOut } from "@/lib/fitpal-auth"
+import { dashboardMainClassName } from "@/lib/dashboard-layout"
 import { bootstrapDemoFitnessData } from "@/lib/fitpal-workouts"
 import { cn } from "@/lib/utils"
 
@@ -95,6 +96,15 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
     bootstrapDemoFitnessData(session.id)
     setUser(session)
   }, [router])
+
+  useEffect(() => {
+    function onSessionUpdated() {
+      const next = getSession()
+      if (next) setUser(next)
+    }
+    window.addEventListener(FITPAL_SESSION_UPDATED_EVENT, onSessionUpdated)
+    return () => window.removeEventListener(FITPAL_SESSION_UPDATED_EVENT, onSessionUpdated)
+  }, [])
 
   function handleLogout() {
     signOut()
@@ -201,7 +211,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             </div>
           </header>
 
-          <main className="flex-1 p-6 md:p-10 lg:p-12 max-w-6xl w-full mx-auto">{children}</main>
+          <main className={dashboardMainClassName}>{children}</main>
         </div>
       </div>
     </DashboardUserProvider>

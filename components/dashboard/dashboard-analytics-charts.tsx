@@ -111,8 +111,8 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
   const stepsGoalPct = Math.min(100, Math.round((week.totalSteps / WEEKLY_STEPS_GOAL) * 100))
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2 mt-12">
-      <Card className="rounded-none border-border lg:col-span-2 overflow-hidden">
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-10 md:mt-12">
+      <Card className="rounded-none border-border md:col-span-2 xl:col-span-3 overflow-hidden">
         <CardHeader className="pb-2">
           <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
             Trends
@@ -125,7 +125,10 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <ChartContainer config={chartStyles} className="h-[300px] w-full aspect-auto">
+          <ChartContainer
+            config={chartStyles}
+            className="h-[280px] md:h-[300px] xl:h-[320px] w-full aspect-auto"
+          >
             <ComposedChart data={trendData} margin={{ left: 4, right: 4, top: 12, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border/60" />
               <XAxis dataKey="day" tickLine={false} axisLine={false} tickMargin={8} />
@@ -214,7 +217,10 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
               Log a few workouts this week to see how your burn splits across categories.
             </p>
           ) : (
-            <ChartContainer config={chartStyles} className="h-[260px] w-full max-w-[320px] aspect-auto mx-auto">
+            <ChartContainer
+              config={chartStyles}
+              className="h-[260px] xl:h-[280px] w-full max-w-[min(100%,380px)] xl:max-w-none xl:mx-0 aspect-auto mx-auto"
+            >
               <PieChart margin={{ top: 8, bottom: 8 }}>
                 <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                 <Pie
@@ -266,7 +272,7 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
         </CardContent>
       </Card>
 
-      <Card className="rounded-none border-border">
+      <Card className="rounded-none border-border md:col-span-2 xl:col-span-3">
         <CardHeader className="pb-4">
           <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
             Targets (demo)

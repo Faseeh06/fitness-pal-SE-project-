@@ -143,3 +143,90 @@ export function getSession(): FitPalSessionUser | null {
     return null
   }
 }
+
+/** Dispatched on `window` after profile updates refresh the session in localStorage. */
+export const FITPAL_SESSION_UPDATED_EVENT = 'fitpal-session-updated'
+
+export function updateUserProfile(
+  userId: string,
+  updates: {
+    name: string
+    age: number | null
+    weight: number | null
+    height: number | null
+    goal: string
+  },
+): { ok: true; user: FitPalSessionUser } | { ok: false; error: string } {
+  if (typeof window === 'undefined') {
+    return { ok: false, error: 'Unavailable on server.' }
+  }
+  const name = updates.name.trim()
+  if (!name) {
+    return { ok: false, error: 'Name is required.' }
+  }
+  const users = readUsers()
+  const row = Object.values(users).find((u) => u.id === userId)
+  if (!row) {
+    return { ok: false, error: 'Account not found.' }
+  }
+  const key = row.email
+  const u = users[key]!
+  u.name = name
+
+  if (updates.age !== null) {
+    const a = Math.round(updates.age)
+    if (a < 10 || a > 120) {
+      return { ok: false, error: 'Age must be between 10 and 120.' }
+    }
+    u.age = a
+  } else {
+    delete u.age
+  }
+
+  if (updates.weight !== null) {
+    const w = updates.weight
+    if (w <= 0 || w > 500) {
+      return { ok: false, error: 'Weight must be a positive number (kg).' }
+    }
+    u.weight = Math.round(w * 10) / 10
+  } else {
+    delete u.weight
+  }
+
+  if (updates.height !== null) {
+    const h = updates.height
+    if (h <= 0 || h > 300) {
+      return { ok: false, error: 'Height must be a positive number (cm).' }
+    }
+    u.height = Math.round(h * 10) / 10
+  } else {
+    delete u.height
+  }
+
+  const g = updates.goal.trim()
+  if (g) {
+    u.goal = g
+  } else {
+    delete u.goal
+  }
+
+  writeUsers(users)
+
+  const sess = getSession()
+  if (sess?.id === userId) {
+    const sessionUser: FitPalSessionUser = {
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      age: u.age,
+      weight: u.weight,
+      height: u.height,
+      goal: u.goal,
+    }
+    window.localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
+    window.dispatchEvent(new Event(FITPAL_SESSION_UPDATED_EVENT))
+    return { ok: true, user: sessionUser }
+  }
+
+  return { ok: true, user: { id: u.id, name: u.name, email: u.email, age: u.age, weight: u.weight, height: u.height, goal: u.goal } }
+}

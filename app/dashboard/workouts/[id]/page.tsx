@@ -12,7 +12,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { dashboardBleedX } from "@/lib/dashboard-layout"
 import { addWorkoutSession, getWorkoutById } from "@/lib/fitpal-workouts"
+import { cn } from "@/lib/utils"
 
 const focusBullets: Record<string, string[]> = {
   "run-easy": [
@@ -104,7 +106,12 @@ export default function WorkoutDetailPage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border border-border bg-muted/20 -mx-6 md:-mx-10 lg:-mx-12 mb-10 md:mb-12">
+      <section
+        className={cn(
+          "relative overflow-hidden border border-border bg-muted/20 mb-10 md:mb-12",
+          dashboardBleedX,
+        )}
+      >
         <div className="relative aspect-[21/10] md:aspect-[24/9] max-h-[380px] min-h-[220px]">
           <img
             src={workout.imageUrl}

@@ -8,12 +8,14 @@ import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { dashboardBleedX } from "@/lib/dashboard-layout"
 import {
   WORKOUT_CATALOG,
   type WorkoutCategory,
   getWorkoutById,
   getWorkoutSessions,
 } from "@/lib/fitpal-workouts"
+import { cn } from "@/lib/utils"
 
 function WorkoutTile({ workoutId }: { workoutId: string }) {
   const w = WORKOUT_CATALOG.find((x) => x.id === workoutId)
@@ -98,7 +100,12 @@ export default function WorkoutsPage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border border-border -mx-6 md:-mx-10 lg:-mx-12 mb-10 bg-muted/15">
+      <section
+        className={cn(
+          "relative overflow-hidden border border-border mb-10 bg-muted/15",
+          dashboardBleedX,
+        )}
+      >
         <div className="relative h-[160px] md:h-[200px]">
           <Image
             src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1800&q=82"

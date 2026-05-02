@@ -8,7 +8,9 @@ import { DashboardAnalyticsCharts } from "@/components/dashboard/dashboard-analy
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { dashboardBleedX } from "@/lib/dashboard-layout"
 import { formatLocalDay, getWeekSummary } from "@/lib/fitpal-workouts"
+import { cn } from "@/lib/utils"
 
 export default function DashboardHomePage() {
   const user = useDashboardUser()
@@ -24,7 +26,12 @@ export default function DashboardHomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border border-border bg-card/40 -mx-6 md:-mx-10 lg:-mx-12 mb-12">
+      <section
+        className={cn(
+          "relative overflow-hidden border border-border bg-card/40 mb-10 md:mb-12",
+          dashboardBleedX,
+        )}
+      >
         <div className="relative h-[200px] md:h-[240px]">
           <Image
             src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1600&q=80"
