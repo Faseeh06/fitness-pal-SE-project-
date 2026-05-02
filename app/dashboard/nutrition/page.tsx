@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useReducer } from "react"
-import { Plus, Trash2 } from "lucide-react"
+import { Apple, Plus, Trash2 } from "lucide-react"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { ModulePageHeader } from "@/components/dashboard/module-page-header"
@@ -63,8 +63,9 @@ export default function NutritionPage() {
   return (
     <div>
       <ModulePageHeader
+        icon={Apple}
         title="Nutrition"
-        description="Browse meals, build today's log, or apply a sample plan. Calories roll into Progress and your dashboard energy charts."
+        description="Add meals or a sample plan — calories flow to Progress and charts."
       />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
@@ -206,9 +207,8 @@ export default function NutritionPage() {
       </div>
 
       <Separator className="my-12" />
-      <p className="text-xs text-muted-foreground max-w-2xl">
-        Applying a plan appends all listed meals — you can remove individual lines from Today.
-        Totals are stored in this browser only.
+      <p className="text-[11px] text-muted-foreground max-w-md leading-snug">
+        Plans append meals to Today; remove lines anytime. Browser-only storage.
       </p>
     </div>
   )

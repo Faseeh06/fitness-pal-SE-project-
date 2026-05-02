@@ -2,11 +2,10 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Dumbbell } from "lucide-react"
+import { Apple, ArrowRight, Droplets, Dumbbell, Flame, Footprints, LayoutList } from "lucide-react"
 
 import { DashboardAnalyticsCharts } from "@/components/dashboard/dashboard-analytics-charts"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { dashboardBleedX } from "@/lib/dashboard-layout"
 import { formatLocalDay, getWeekSummary } from "@/lib/fitpal-workouts"
@@ -50,16 +49,20 @@ export default function DashboardHomePage() {
             <h1 className="text-3xl md:text-[2.65rem] font-extralight tracking-tight text-balance max-w-2xl">
               Hello, {user.name}
             </h1>
-            <p className="text-sm text-muted-foreground mt-3 max-w-xl leading-relaxed">
-              Visual summaries below sync from workouts you log — steps blend seeded baselines with
-              session estimates for this demo.
+            <p className="text-sm text-muted-foreground mt-3 max-w-md leading-snug">
+              Below: today and this week at a glance. Charts follow what you log.
             </p>
           </div>
         </div>
       </section>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
-        <div className="bg-background p-5 md:p-7">
+        <div className="bg-background p-5 md:p-7 relative">
+          <Footprints
+            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
             Today · Steps
           </p>
@@ -74,11 +77,16 @@ export default function DashboardHomePage() {
               }}
             />
           </div>
-          <p className="text-[10px] text-muted-foreground mt-2 uppercase tracking-wide">
-            vs demo 12k pacing
+          <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
+            vs 12k demo pace
           </p>
         </div>
-        <div className="bg-background p-5 md:p-7">
+        <div className="bg-background p-5 md:p-7 relative">
+          <Flame
+            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
             Today · Burn
           </p>
@@ -94,31 +102,37 @@ export default function DashboardHomePage() {
               }}
             />
           </div>
-          <p className="text-[10px] text-muted-foreground mt-2 uppercase tracking-wide">
-            vs demo 600 kcal day
+          <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
+            vs 600 kcal demo
           </p>
         </div>
-        <div className="bg-background p-5 md:p-7">
+        <div className="bg-background p-5 md:p-7 relative">
+          <LayoutList
+            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
             Week · Burn
           </p>
           <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {week.totalCaloriesBurned}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">
-            Rolling 7-day sum from completed workouts.
-          </p>
+          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">7-day total kcal.</p>
         </div>
-        <div className="bg-background p-5 md:p-7">
+        <div className="bg-background p-5 md:p-7 relative">
+          <Dumbbell
+            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
             Week · Sessions
           </p>
           <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {week.workoutsCompleted}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">
-            Every completion feeds your charts automatically.
-          </p>
+          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">Completed workouts.</p>
         </div>
       </div>
 
@@ -129,23 +143,40 @@ export default function DashboardHomePage() {
       <Separator className="my-14" />
 
       <div>
-        <p className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground mb-4">
+        <p className="text-[10px] tracking-[0.28em] uppercase text-muted-foreground mb-3">
           Quick actions
         </p>
-        <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-          <Button asChild className="rounded-none gap-2">
-            <Link href="/dashboard/workouts">
-              <Dumbbell className="h-4 w-4" />
-              Browse workouts
-              <ArrowRight className="h-4 w-4 opacity-60" />
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="rounded-none">
-            <Link href="/dashboard/hydration">Log hydration</Link>
-          </Button>
-          <Button asChild variant="outline" className="rounded-none">
-            <Link href="/dashboard/nutrition">Nutrition</Link>
-          </Button>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <Link
+            href="/dashboard/workouts"
+            className="group flex items-center gap-3 border border-border bg-background px-4 py-3.5 transition-colors hover:bg-secondary/60"
+          >
+            <span className="flex h-9 w-9 items-center justify-center border border-border bg-secondary/50 text-foreground/80">
+              <Dumbbell className="h-4 w-4" strokeWidth={1.5} />
+            </span>
+            <span className="flex-1 text-sm font-light tracking-tight">Workouts</span>
+            <ArrowRight className="h-4 w-4 text-muted-foreground opacity-50 group-hover:opacity-80" />
+          </Link>
+          <Link
+            href="/dashboard/hydration"
+            className="group flex items-center gap-3 border border-border bg-background px-4 py-3.5 transition-colors hover:bg-secondary/60"
+          >
+            <span className="flex h-9 w-9 items-center justify-center border border-border bg-secondary/50 text-foreground/80">
+              <Droplets className="h-4 w-4" strokeWidth={1.5} />
+            </span>
+            <span className="flex-1 text-sm font-light tracking-tight">Hydration</span>
+            <ArrowRight className="h-4 w-4 text-muted-foreground opacity-50 group-hover:opacity-80" />
+          </Link>
+          <Link
+            href="/dashboard/nutrition"
+            className="group flex items-center gap-3 border border-border bg-background px-4 py-3.5 transition-colors hover:bg-secondary/60"
+          >
+            <span className="flex h-9 w-9 items-center justify-center border border-border bg-secondary/50 text-foreground/80">
+              <Apple className="h-4 w-4" strokeWidth={1.5} />
+            </span>
+            <span className="flex-1 text-sm font-light tracking-tight">Nutrition</span>
+            <ArrowRight className="h-4 w-4 text-muted-foreground opacity-50 group-hover:opacity-80" />
+          </Link>
         </div>
       </div>
     </div>

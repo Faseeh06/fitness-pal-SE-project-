@@ -80,8 +80,9 @@ export default function HydrationPage() {
   return (
     <div>
       <ModulePageHeader
+        icon={Droplets}
         title="Hydration"
-        description={`Log water in millilitres. Progress compares today's total to your daily goal (demo default ${DEFAULT_DAILY_GOAL_ML.toLocaleString()} ml).`}
+        description={`Water in ml vs your goal (default ${DEFAULT_DAILY_GOAL_ML.toLocaleString()} ml).`}
       />
 
       <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
@@ -213,9 +214,7 @@ export default function HydrationPage() {
       </div>
 
       <Separator className="my-10" />
-      <p className="text-xs text-muted-foreground">
-        Data is per browser. Clear site storage to reset logs and goals.
-      </p>
+      <p className="text-[11px] text-muted-foreground leading-snug">Per-browser data; clear storage to reset.</p>
     </div>
   )
 }

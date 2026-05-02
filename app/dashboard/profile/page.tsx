@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { User } from "lucide-react"
 
+import { AsideNote } from "@/components/dashboard/aside-note"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { ModulePageHeader } from "@/components/dashboard/module-page-header"
 import { Button } from "@/components/ui/button"
@@ -15,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 import { FITNESS_GOAL_LABEL, type FitnessGoalKey } from "@/lib/fitpal-ai-suggestions"
 import { updateUserProfile } from "@/lib/fitpal-auth"
 
@@ -101,9 +102,10 @@ export default function ProfilePage() {
   return (
     <div>
       <ModulePageHeader
+        icon={User}
         kicker="Account"
         title="Profile"
-        description="Update how FitPal addresses you and what you are training for. Saved to your demo user in localStorage and reflected across the dashboard."
+        description="Name and goal update your session everywhere. Demo data stays in localStorage."
       />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
@@ -201,9 +203,8 @@ export default function ProfilePage() {
                     ))}
                   </SelectContent>
                 </Select>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
-                  Drives rule-based tips on the AI suggestions page (weight loss vs muscle gain vs
-                  maintenance).
+                <p className="text-[11px] text-muted-foreground leading-snug">
+                  Shapes the rule-based tips on AI suggestions.
                 </p>
               </div>
 
@@ -223,16 +224,10 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
 
-        <div className="space-y-4 text-sm text-muted-foreground border border-border p-5 md:p-6 bg-muted/20 leading-relaxed">
-          <p>
-            The sidebar greets you by name. Nutrition, Progress, and AI modules read the same
-            session snapshot after you save.
-          </p>
-          <Separator />
-          <p className="text-xs">
-            Passwords are not shown here — this demo stores them in plain text in localStorage only.
-          </p>
-        </div>
+        <AsideNote>
+          <p>Sidebar and modules read this profile after you save.</p>
+          <p>Passwords aren’t shown — demo only, plain text in storage.</p>
+        </AsideNote>
       </div>
     </div>
   )

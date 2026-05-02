@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useReducer } from "react"
+import { Flame, Footprints, Scale, TrendingUp, UtensilsCrossed } from "lucide-react"
 import {
   Bar,
   BarChart,
@@ -102,12 +103,18 @@ export default function ProgressPage() {
   return (
     <div>
       <ModulePageHeader
+        icon={TrendingUp}
         title="Progress"
-        description="Log weight, then compare intake from Nutrition with calories burned from workouts. Steps reuse the same daily totals as your dashboard."
+        description="Weight, energy in vs out, and steps — same numbers as on Overview."
       />
 
       <div className="grid gap-px bg-border border border-border sm:grid-cols-2 xl:grid-cols-4 mb-10">
-        <div className="bg-background p-5 md:p-6">
+        <div className="bg-background p-5 md:p-6 relative">
+          <Scale
+            className="absolute right-3 top-3 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-2">
             Today · Weight
           </p>
@@ -115,19 +122,34 @@ export default function ProgressPage() {
             {weightToday != null ? `${weightToday} kg` : "—"}
           </p>
         </div>
-        <div className="bg-background p-5 md:p-6">
+        <div className="bg-background p-5 md:p-6 relative">
+          <UtensilsCrossed
+            className="absolute right-3 top-3 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-2">
             Today · Calories in
           </p>
           <p className="text-2xl font-extralight tabular-nums">{todayIn}</p>
         </div>
-        <div className="bg-background p-5 md:p-6">
+        <div className="bg-background p-5 md:p-6 relative">
+          <Flame
+            className="absolute right-3 top-3 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-2">
             Today · Burned
           </p>
           <p className="text-2xl font-extralight tabular-nums">{todayOut}</p>
         </div>
-        <div className="bg-background p-5 md:p-6">
+        <div className="bg-background p-5 md:p-6 relative">
+          <Footprints
+            className="absolute right-3 top-3 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-2">
             Today · Steps
           </p>
@@ -238,9 +260,8 @@ export default function ProgressPage() {
       </div>
 
       <Separator className="my-10" />
-      <p className="text-xs text-muted-foreground">
-        Weekly summary on the overview pulls the same workout and step data; nutrition intake appears
-        here once you log meals in the Nutrition module.
+      <p className="text-[11px] text-muted-foreground leading-snug max-w-xl">
+        Nutrition totals appear here after you log meals.
       </p>
     </div>
   )

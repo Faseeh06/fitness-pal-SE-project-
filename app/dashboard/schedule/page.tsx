@@ -1,16 +1,16 @@
 "use client"
 
 import { useMemo, useReducer, useState } from "react"
-import { ChevronLeft, ChevronRight, ExternalLink, Trash2 } from "lucide-react"
+import { Calendar, ChevronLeft, ChevronRight, ExternalLink, Lightbulb, Trash2 } from "lucide-react"
 import Link from "next/link"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
+import { AsideNote } from "@/components/dashboard/aside-note"
 import { ModulePageHeader } from "@/components/dashboard/module-page-header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import {
   addScheduleEntry,
@@ -89,9 +89,10 @@ export default function SchedulePage() {
   return (
     <div>
       <ModulePageHeader
+        icon={Calendar}
         kicker="Plan"
         title="Schedule"
-        description="Plan sessions for the week ahead. Optional links jump to catalog workouts. Everything is stored in this browser (demo)."
+        description="Week view, times sorted per day. Optional link to a catalog workout. Saved in this browser."
       />
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-border">
@@ -262,16 +263,10 @@ export default function SchedulePage() {
           </CardContent>
         </Card>
 
-        <div className="space-y-4 text-sm text-muted-foreground leading-relaxed border border-border p-5 md:p-6 bg-muted/20">
-          <p>
-            Use the week controls to plan ahead. Entries are sorted by time within each day. Removing
-            an item only affects the schedule — not completed workout history.
-          </p>
-          <Separator className="bg-border" />
-          <p className="text-xs">
-            Tip: link a catalog workout to open its detail page with steps and demo logging.
-          </p>
-        </div>
+        <AsideNote icon={Lightbulb}>
+          <p>Week arrows move the grid. Deletes here don’t remove logged workouts.</p>
+          <p>Link a catalog workout to open its detail page.</p>
+        </AsideNote>
       </div>
     </div>
   )

@@ -63,10 +63,10 @@ function NavLink({
       href={href}
       onClick={onNavigate}
       className={cn(
-        "group flex items-center gap-3 px-3 py-2.5 text-[13px] tracking-tight transition-colors border border-transparent",
+        "group flex items-center gap-3 px-3 py-2.5 text-[13px] tracking-tight transition-colors border border-transparent border-l-2",
         active
-          ? "bg-secondary text-foreground border-border"
-          : "text-muted-foreground hover:text-foreground hover:bg-secondary/60",
+          ? "bg-secondary text-foreground border-border border-l-foreground/25"
+          : "text-muted-foreground hover:text-foreground hover:bg-secondary/60 border-l-transparent",
       )}
     >
       <Icon className="h-4 w-4 shrink-0 opacity-70 group-hover:opacity-100" />
@@ -124,19 +124,27 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
     return null
   }
 
+  const initial = user.name.trim().charAt(0).toUpperCase() || "?"
+
   const sidebar = (onNavigate?: () => void) => (
     <div className="flex h-full flex-col">
-      <div className="px-3 pb-6">
-        <Link
-          href="/dashboard"
-          onClick={onNavigate}
-          className="text-[11px] font-medium tracking-[0.28em] uppercase text-foreground"
+      <div className="px-3 pb-6 flex items-start gap-3">
+        <div
+          className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-foreground text-background text-sm font-medium"
+          aria-hidden
         >
-          FitPal
-        </Link>
-        <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-          {user.name}
-        </p>
+          {initial}
+        </div>
+        <div className="min-w-0 pt-0.5">
+          <Link
+            href="/dashboard"
+            onClick={onNavigate}
+            className="text-[11px] font-medium tracking-[0.28em] uppercase text-foreground block"
+          >
+            FitPal
+          </Link>
+          <p className="text-xs text-muted-foreground mt-1.5 leading-snug truncate">{user.name}</p>
+        </div>
       </div>
       <Separator className="mb-4" />
       <nav className="flex flex-1 flex-col gap-0.5 px-1">
@@ -185,7 +193,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <DashboardUserProvider user={user}>
       <div className="min-h-screen flex bg-background">
-        <aside className="hidden md:flex w-[260px] shrink-0 border-r border-border flex-col py-8 px-4 bg-card/30">
+        <aside className="hidden md:flex w-[260px] shrink-0 border-r border-border flex-col py-8 px-4 bg-card/50">
           {sidebar()}
         </aside>
 
