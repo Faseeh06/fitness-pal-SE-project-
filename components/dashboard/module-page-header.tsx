@@ -15,7 +15,7 @@ export function ModulePageHeader({
     <header className="mb-9 md:mb-11 pb-7 md:pb-8 border-b border-border">
       <div className="flex gap-4 md:gap-5">
         <div
-          className="w-0.5 shrink-0 rounded-full bg-dashboard-bar/35 self-stretch min-h-[3.25rem]"
+          className="w-0.5 shrink-0 rounded-full bg-foreground/15 self-stretch min-h-[3.25rem]"
           aria-hidden
         />
         <div className="flex min-w-0 flex-1 items-start gap-3 md:gap-4">

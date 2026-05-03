@@ -38,12 +38,6 @@
     --sidebar-accent-foreground: 0 0% 5%;
     --sidebar-border: 0 0% 85%;
     --sidebar-ring: 0 0% 5%;
-    /** Dark chrome for dashboard (top bar + sidebar) */
-    --dashboard-bar: 220 14% 10%;
-    --dashboard-bar-foreground: 210 20% 98%;
-    --dashboard-bar-muted: 215 12% 62%;
-    --dashboard-sidebar: 220 12% 12%;
-    --dashboard-sidebar-border: 220 10% 18%;
   }
 }
 
