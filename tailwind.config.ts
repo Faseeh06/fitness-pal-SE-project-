@@ -65,6 +65,17 @@ const config: Config = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        dashboard: {
+          bar: {
+            DEFAULT: 'hsl(var(--dashboard-bar))',
+            foreground: 'hsl(var(--dashboard-bar-foreground))',
+            muted: 'hsl(var(--dashboard-bar-muted))',
+          },
+          sidebar: {
+            DEFAULT: 'hsl(var(--dashboard-sidebar))',
+            border: 'hsl(var(--dashboard-sidebar-border))',
+          },
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

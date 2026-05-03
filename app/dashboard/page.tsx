@@ -44,13 +44,13 @@ export default function DashboardHomePage() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_transparent_20%,_hsl(var(--background))_75%)] opacity-90" />
           <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-10 lg:p-12">
             <p className="text-[11px] tracking-[0.32em] uppercase text-muted-foreground mb-2">
-              Dashboard
+              Overview
             </p>
             <h1 className="text-3xl md:text-[2.65rem] font-extralight tracking-tight text-balance max-w-2xl">
-              Hello, {user.name}
+              This week
             </h1>
             <p className="text-sm text-muted-foreground mt-3 max-w-md leading-snug">
-              Below: today and this week at a glance. Charts follow what you log.
+              Today and weekly totals below; charts follow what you log.
             </p>
           </div>
         </div>

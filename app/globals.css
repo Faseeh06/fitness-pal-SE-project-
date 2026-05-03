@@ -11,7 +11,7 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
+    --foreground: 0 0% 8%;
     --card: 0 0% 98%;
     --card-foreground: 0 0% 5%;
     --popover: 0 0% 100%;
@@ -20,8 +20,8 @@
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 94%;
     --secondary-foreground: 0 0% 5%;
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 38%;
     --accent: 0 0% 94%;
     --accent-foreground: 0 0% 5%;
     --destructive: 0 0% 30%;
@@ -38,6 +38,12 @@
     --sidebar-accent-foreground: 0 0% 5%;
     --sidebar-border: 0 0% 85%;
     --sidebar-ring: 0 0% 5%;
+    /** Dark chrome for dashboard (top bar + sidebar) */
+    --dashboard-bar: 220 14% 10%;
+    --dashboard-bar-foreground: 210 20% 98%;
+    --dashboard-bar-muted: 215 12% 62%;
+    --dashboard-sidebar: 220 12% 12%;
+    --dashboard-sidebar-border: 220 10% 18%;
   }
 }
 
