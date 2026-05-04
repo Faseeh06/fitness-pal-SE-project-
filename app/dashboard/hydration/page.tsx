@@ -4,7 +4,7 @@ import { useMemo, useReducer } from "react"
 import { Droplets } from "lucide-react"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
-import { ModulePageHeader } from "@/components/dashboard/module-page-header"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -79,9 +79,9 @@ export default function HydrationPage() {
 
   return (
     <div>
-      <ModulePageHeader
-        icon={Droplets}
-        title="Hydration"
+      <DashboardPageHero
+        kicker="Hydration"
+        title="Stay topped up"
         description={`Water in ml vs your goal (default ${DEFAULT_DAILY_GOAL_ML.toLocaleString()} ml).`}
       />
 

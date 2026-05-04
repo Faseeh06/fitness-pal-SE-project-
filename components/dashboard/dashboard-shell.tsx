@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 
 import { DashboardUserProvider } from "@/components/dashboard/dashboard-context"
+import { DashboardTopHeader } from "@/components/dashboard/dashboard-top-header"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -190,35 +191,31 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
     </div>
   )
 
+  const mobileMenu = (
+    <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="rounded-none" aria-label="Open menu">
+          <Menu className="h-5 w-5" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-[280px] p-0 border-border rounded-none bg-background">
+        <SheetHeader className="sr-only">
+          <SheetTitle>Navigation</SheetTitle>
+        </SheetHeader>
+        <div className="flex h-full flex-col py-8 px-4">{sidebar(() => setMobileOpen(false))}</div>
+      </SheetContent>
+    </Sheet>
+  )
+
   return (
     <DashboardUserProvider user={user}>
       <div className="min-h-screen flex bg-background">
-        <aside className="hidden md:flex w-[260px] shrink-0 border-r border-border flex-col py-8 px-4 bg-card/50">
+        <aside className="hidden md:flex w-[260px] shrink-0 border-r border-border flex-col py-8 px-4 bg-card/50 dark:bg-card/80">
           {sidebar()}
         </aside>
 
         <div className="flex flex-1 flex-col min-w-0">
-          <header className="flex md:hidden h-14 items-center justify-between border-b border-border px-4 bg-background/95 backdrop-blur-sm sticky top-0 z-40">
-            <div className="flex items-center gap-2">
-              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-none" aria-label="Open menu">
-                    <Menu className="h-5 w-5" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-[280px] p-0 border-border rounded-none">
-                  <SheetHeader className="sr-only">
-                    <SheetTitle>Navigation</SheetTitle>
-                  </SheetHeader>
-                  <div className="flex h-full flex-col py-8 px-4">{sidebar(() => setMobileOpen(false))}</div>
-                </SheetContent>
-              </Sheet>
-              <span className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
-                FitPal
-              </span>
-            </div>
-          </header>
-
+          <DashboardTopHeader user={user} mobileMenu={mobileMenu} />
           <main className={dashboardMainClassName}>{children}</main>
         </div>
       </div>

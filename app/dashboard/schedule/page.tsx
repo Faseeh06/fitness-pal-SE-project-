@@ -1,12 +1,12 @@
 "use client"
 
 import { useMemo, useReducer, useState } from "react"
-import { Calendar, ChevronLeft, ChevronRight, ExternalLink, Lightbulb, Trash2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, ExternalLink, Lightbulb, Trash2 } from "lucide-react"
 import Link from "next/link"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { AsideNote } from "@/components/dashboard/aside-note"
-import { ModulePageHeader } from "@/components/dashboard/module-page-header"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -88,10 +88,9 @@ export default function SchedulePage() {
 
   return (
     <div>
-      <ModulePageHeader
-        icon={Calendar}
-        kicker="Plan"
-        title="Schedule"
+      <DashboardPageHero
+        kicker="Schedule"
+        title="Plan your week"
         description="Week view, times sorted per day. Optional link to a catalog workout. Saved in this browser."
       />
 

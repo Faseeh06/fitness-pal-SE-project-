@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -50,6 +51,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-background">
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle className="border border-border bg-background/80 backdrop-blur-sm" />
+      </div>
       <Link
         href="/"
         className="mb-10 text-xs font-medium tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground transition-colors"

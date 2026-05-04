@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Crosshair, Dumbbell, Loader2, MessageSquare, Send, Sparkles, Trash2, UtensilsCrossed } from "lucide-react"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
-import { ModulePageHeader } from "@/components/dashboard/module-page-header"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -120,8 +120,7 @@ export default function AiPage() {
 
   return (
     <div>
-      <ModulePageHeader
-        icon={Sparkles}
+      <DashboardPageHero
         kicker="Guidance"
         title="AI suggestions"
         description="Chat with the assistant (Groq · Llama 3.1 8B by default). Below: offline rules for your goal. Set GROQ_API_KEY in .env.local."

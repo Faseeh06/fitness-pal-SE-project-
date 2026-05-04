@@ -1,11 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { User } from "lucide-react"
-
 import { AsideNote } from "@/components/dashboard/aside-note"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
-import { ModulePageHeader } from "@/components/dashboard/module-page-header"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -101,10 +99,9 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <ModulePageHeader
-        icon={User}
+      <DashboardPageHero
         kicker="Account"
-        title="Profile"
+        title="Your profile"
         description="Name and goal update your session everywhere. Demo data stays in localStorage."
       />
 

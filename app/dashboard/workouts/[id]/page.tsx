@@ -6,15 +6,14 @@ import { useParams, useRouter } from "next/navigation"
 import { CheckCircle2, Flame, ListChecks, Timer } from "lucide-react"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { dashboardBleedX } from "@/lib/dashboard-layout"
 import { addWorkoutSession, getWorkoutById } from "@/lib/fitpal-workouts"
-import { cn } from "@/lib/utils"
 
 const focusBullets: Record<string, string[]> = {
   "run-easy": [
@@ -106,52 +105,36 @@ export default function WorkoutDetailPage() {
 
   return (
     <div>
-      <section
-        className={cn(
-          "relative overflow-hidden border border-border bg-muted/20 mb-10 md:mb-12",
-          dashboardBleedX,
-        )}
-      >
-        <div className="relative aspect-[21/10] md:aspect-[24/9] max-h-[380px] min-h-[220px]">
-          <img
-            src={workout.imageUrl}
-            alt=""
-            fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/25" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
-          <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-12 max-w-3xl">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <Badge
-                variant="outline"
-                className="rounded-none text-[10px] uppercase tracking-[0.2em] bg-background/80 backdrop-blur-sm"
-              >
-                {workout.category}
-              </Badge>
-              <span className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
-                Session blueprint
-              </span>
-            </div>
-            <h1 className="text-3xl md:text-[2.85rem] font-extralight tracking-tight text-balance">
-              {workout.name}
-            </h1>
-            <p className="text-sm md:text-base text-muted-foreground mt-4 leading-relaxed max-w-2xl">
-              {workout.description}
-            </p>
-            <div className="flex flex-wrap gap-6 mt-8 text-sm">
-              <span className="inline-flex items-center gap-2 text-foreground/90">
-                <Timer className="h-4 w-4 opacity-70" />
-                <span className="tabular-nums">{workout.defaultDurationMinutes} min target</span>
-              </span>
-              <span className="inline-flex items-center gap-2 text-foreground/90">
-                <Flame className="h-4 w-4 opacity-70" />
-                <span className="tabular-nums">~{workout.defaultCaloriesBurned} kcal guide</span>
-              </span>
-            </div>
+      <DashboardPageHero
+        priority
+        kicker="Workout"
+        title={workout.name}
+        description={workout.description}
+        imageSrc={workout.imageUrl}
+        lead={
+          <>
+            <Badge
+              variant="outline"
+              className="rounded-none border-white/25 bg-white/10 text-[10px] uppercase tracking-[0.2em] text-white backdrop-blur-sm"
+            >
+              {workout.category}
+            </Badge>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/60">Session blueprint</span>
+          </>
+        }
+        footer={
+          <div className="flex flex-wrap gap-6 text-sm text-white/85">
+            <span className="inline-flex items-center gap-2">
+              <Timer className="h-4 w-4 opacity-70" />
+              <span className="tabular-nums">{workout.defaultDurationMinutes} min target</span>
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Flame className="h-4 w-4 opacity-70" />
+              <span className="tabular-nums">~{workout.defaultCaloriesBurned} kcal guide</span>
+            </span>
           </div>
-        </div>
-      </section>
+        }
+      />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
         <div className="grid gap-10">

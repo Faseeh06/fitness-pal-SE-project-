@@ -1,15 +1,13 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { Apple, ArrowRight, Droplets, Dumbbell, Flame, Footprints, LayoutList } from "lucide-react"
 
 import { DashboardAnalyticsCharts } from "@/components/dashboard/dashboard-analytics-charts"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Separator } from "@/components/ui/separator"
-import { dashboardBleedX } from "@/lib/dashboard-layout"
 import { formatLocalDay, getWeekSummary } from "@/lib/fitpal-workouts"
-import { cn } from "@/lib/utils"
 
 export default function DashboardHomePage() {
   const user = useDashboardUser()
@@ -25,36 +23,12 @@ export default function DashboardHomePage() {
 
   return (
     <div>
-      <section
-        className={cn(
-          "relative overflow-hidden border border-border bg-card/40 mb-10 md:mb-12",
-          dashboardBleedX,
-        )}
-      >
-        <div className="relative h-[200px] md:h-[240px]">
-          <Image
-            src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1600&q=80"
-            alt=""
-            fill
-            className="object-cover object-center opacity-95"
-            sizes="(max-width: 768px) 100vw, 896px"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/25" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_transparent_20%,_hsl(var(--background))_75%)] opacity-90" />
-          <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-10 lg:p-12">
-            <p className="text-[11px] tracking-[0.32em] uppercase text-muted-foreground mb-2">
-              Overview
-            </p>
-            <h1 className="text-3xl md:text-[2.65rem] font-extralight tracking-tight text-balance max-w-2xl">
-              This week
-            </h1>
-            <p className="text-sm text-muted-foreground mt-3 max-w-md leading-snug">
-              Today and weekly totals below; charts follow what you log.
-            </p>
-          </div>
-        </div>
-      </section>
+      <DashboardPageHero
+        priority
+        kicker="Overview"
+        title="This week"
+        description="Today and weekly totals below; charts follow what you log."
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
         <div className="bg-background p-5 md:p-7 relative">

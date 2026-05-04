@@ -1,10 +1,10 @@
 "use client"
 
 import { useMemo, useReducer } from "react"
-import { Apple, Plus, Trash2 } from "lucide-react"
+import { Plus, Trash2 } from "lucide-react"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
-import { ModulePageHeader } from "@/components/dashboard/module-page-header"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -62,9 +62,9 @@ export default function NutritionPage() {
 
   return (
     <div>
-      <ModulePageHeader
-        icon={Apple}
-        title="Nutrition"
+      <DashboardPageHero
+        kicker="Nutrition"
+        title="Fuel your day"
         description="Add meals or a sample plan — calories flow to Progress and charts."
       />
 

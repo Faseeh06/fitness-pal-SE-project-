@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useReducer } from "react"
-import { Flame, Footprints, Scale, TrendingUp, UtensilsCrossed } from "lucide-react"
+import { Flame, Footprints, Scale, UtensilsCrossed } from "lucide-react"
 import {
   Bar,
   BarChart,
@@ -13,7 +13,7 @@ import {
 } from "recharts"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
-import { ModulePageHeader } from "@/components/dashboard/module-page-header"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -102,9 +102,9 @@ export default function ProgressPage() {
 
   return (
     <div>
-      <ModulePageHeader
-        icon={TrendingUp}
-        title="Progress"
+      <DashboardPageHero
+        kicker="Progress"
+        title="Track your momentum"
         description="Weight, energy in vs out, and steps — same numbers as on Overview."
       />
 

@@ -1,21 +1,19 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { ArrowUpRight, Flame, Timer } from "lucide-react"
 
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
+import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { dashboardBleedX } from "@/lib/dashboard-layout"
 import {
   WORKOUT_CATALOG,
   type WorkoutCategory,
   getWorkoutById,
   getWorkoutSessions,
 } from "@/lib/fitpal-workouts"
-import { cn } from "@/lib/utils"
 
 function WorkoutTile({ workoutId }: { workoutId: string }) {
   const w = WORKOUT_CATALOG.find((x) => x.id === workoutId)
@@ -100,37 +98,13 @@ export default function WorkoutsPage() {
 
   return (
     <div>
-      <section
-        className={cn(
-          "relative overflow-hidden border border-border mb-10 bg-muted/15",
-          dashboardBleedX,
-        )}
-      >
-        <div className="relative h-[160px] md:h-[200px]">
-          <Image
-            src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1800&q=82"
-            alt=""
-            fill
-            className="object-cover object-[center_35%]"
-            sizes="100vw"
-            priority
-            unoptimized
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
-          <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-10 lg:px-12">
-            <p className="text-[11px] tracking-[0.32em] uppercase text-muted-foreground mb-2">
-              Module
-            </p>
-            <h1 className="text-2xl md:text-4xl font-extralight tracking-tight text-balance">
-              Workouts
-            </h1>
-            <p className="text-sm text-muted-foreground mt-3 max-w-2xl leading-relaxed">
-              Switch between cardio and strength — only one category shows at a time so the page
-              stays calm. Tiles use your logged sessions to feed dashboard charts.
-            </p>
-          </div>
-        </div>
-      </section>
+      <DashboardPageHero
+        priority
+        kicker="Workouts"
+        title="Train with intent"
+        description="Switch between cardio and strength — one category at a time. Logged sessions feed your dashboard charts."
+        imageSrc="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1800&q=82"
+      />
 
       <Tabs defaultValue="cardio" className="w-full">
         <TabsList className="h-auto w-full flex flex-wrap sm:flex-nowrap rounded-none border border-border bg-muted/40 p-0 gap-px">
