@@ -248,7 +248,7 @@ export default function AiPage() {
         </div>
       </div>
 
-      <Card className="rounded-none border-none bg-white/40 mb-10 shadow-sm">
+      <Card className="rounded-none border-none bg-transparent mb-10">
         <CardHeader className="border-b border-border/70 pb-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2.5">
@@ -261,8 +261,8 @@ export default function AiPage() {
                   Checking…
                 </Badge>
               ) : groqConfigured ? (
-                <Badge variant="outline" className="rounded-none text-[10px] border-emerald-800/25 text-emerald-900 bg-emerald-50/60">
-                  Groq ready
+                <Badge variant="outline" className="rounded-none text-[10px] border-emerald-500 text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 dark:text-emerald-400">
+                  Assistant Active
                 </Badge>
               ) : (
                 <Badge variant="destructive" className="rounded-none text-[10px]">
@@ -403,7 +403,7 @@ export default function AiPage() {
 
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 mb-10">
-        <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-1 shadow-sm">
+        <Card className="rounded-none border-none bg-transparent md:col-span-2 xl:col-span-1">
           <CardHeader className="border-b border-border/70 pb-4">
             <div className="flex items-center gap-2.5">
               <Dumbbell className="h-4 w-4 text-foreground/40" strokeWidth={1.5} aria-hidden />
@@ -423,7 +423,7 @@ export default function AiPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-1 shadow-sm">
+        <Card className="rounded-none border-none bg-transparent md:col-span-2 xl:col-span-1">
           <CardHeader className="border-b border-border/70 pb-4">
             <div className="flex items-center gap-2.5">
               <UtensilsCrossed className="h-4 w-4 text-foreground/40" strokeWidth={1.5} aria-hidden />
@@ -443,7 +443,7 @@ export default function AiPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-1 shadow-sm">
+        <Card className="rounded-none border-none bg-transparent md:col-span-2 xl:col-span-1">
           <CardHeader className="border-b border-border/70 pb-4">
             <div className="flex items-center gap-2.5">
               <Crosshair className="h-4 w-4 text-foreground/40" strokeWidth={1.5} aria-hidden />

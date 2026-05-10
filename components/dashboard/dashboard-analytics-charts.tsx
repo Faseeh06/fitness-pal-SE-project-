@@ -113,7 +113,7 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
 
   return (
     <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-10 md:mt-12">
-      <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-3 overflow-hidden shadow-sm">
+      <Card className="rounded-none border-none bg-transparent md:col-span-2 xl:col-span-3 overflow-hidden">
         <CardHeader className="pb-2">
           <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
             Trends
@@ -156,7 +156,7 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
                 stroke="var(--color-calories)"
                 strokeWidth={2}
                 fill="var(--color-calories)"
-                fillOpacity={0.18}
+                fillOpacity={0.4}
               />
               <Line
                 yAxisId="right"
@@ -172,7 +172,7 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
         </CardContent>
       </Card>
 
-      <Card className="rounded-none border-none bg-white/40 overflow-hidden shadow-sm">
+      <Card className="rounded-none border-none bg-transparent overflow-hidden">
         <CardHeader className="pb-2">
           <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
             Volume
@@ -202,7 +202,7 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
         </CardContent>
       </Card>
 
-      <Card className="rounded-none border-none bg-white/40 overflow-hidden shadow-sm">
+      <Card className="rounded-none border-none bg-transparent overflow-hidden">
         <CardHeader className="pb-2">
           <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
             Balance
@@ -244,7 +244,7 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
         </CardContent>
       </Card>
 
-      <Card className="rounded-none border-none bg-white/40 overflow-hidden shadow-sm">
+      <Card className="rounded-none border-none bg-transparent overflow-hidden">
         <CardHeader className="pb-2">
           <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
             Training load
@@ -273,7 +273,7 @@ export function DashboardAnalyticsCharts({ userId }: Props) {
         </CardContent>
       </Card>
 
-      <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-3 shadow-sm">
+      <Card className="rounded-none border-none bg-transparent md:col-span-2 xl:col-span-3">
         <CardHeader className="pb-4">
           <p className="text-[11px] tracking-[0.25em] uppercase text-muted-foreground">
             Targets (demo)

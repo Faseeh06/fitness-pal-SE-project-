@@ -66,8 +66,9 @@ function NavLink({
       className={cn(
         "group flex items-center gap-3 px-3 py-2.5 text-[13px] tracking-tight transition-colors border border-transparent border-l-2",
         active
-          ? "bg-secondary text-foreground border-border border-l-foreground/25"
+          ? "bg-primary/15 text-primary border-primary border-l-4 font-semibold"
           : "border-l-transparent text-muted-foreground hover:text-foreground hover:bg-secondary/60",
+
       )}
     >
       <Icon className="h-4 w-4 shrink-0 opacity-70 group-hover:opacity-100" />

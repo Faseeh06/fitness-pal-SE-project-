@@ -69,10 +69,10 @@ export function DashboardTopHeader({
     <header
       className={cn(
         "flex shrink-0 items-center justify-between gap-3 px-4 py-3 md:px-6 lg:px-8 xl:px-10 md:py-3.5",
-        "bg-background text-foreground border-none",
-        "dark:bg-black dark:text-zinc-100 dark:border-white/10",
+        "bg-transparent text-foreground border-none",
       )}
     >
+
 
 
 
