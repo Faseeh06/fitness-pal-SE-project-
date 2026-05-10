@@ -33,14 +33,15 @@ import {
 } from "@/lib/fitpal-workouts"
 
 const chartStyles = {
-  calories: { label: "Calories burned", color: "hsl(0 0% 12%)" },
-  steps: { label: "Steps", color: "hsl(0 0% 42%)" },
-  cardio: { label: "Cardio sessions", color: "hsl(0 0% 18%)" },
-  strength: { label: "Strength sessions", color: "hsl(0 0% 58%)" },
-  minutes: { label: "Minutes trained", color: "hsl(0 0% 28%)" },
-  cardioKcal: { label: "Cardio burn", color: "hsl(0 0% 15%)" },
-  strengthKcal: { label: "Strength burn", color: "hsl(0 0% 50%)" },
+  calories: { label: "Calories burned", color: "hsl(14 90% 55%)" },
+  steps: { label: "Steps", color: "hsl(45 93% 47%)" },
+  cardio: { label: "Cardio sessions", color: "hsl(199 89% 48%)" },
+  strength: { label: "Strength sessions", color: "hsl(162 72% 40%)" },
+  minutes: { label: "Minutes trained", color: "hsl(262 83% 58%)" },
+  cardioKcal: { label: "Cardio burn", color: "hsl(199 89% 48%)" },
+  strengthKcal: { label: "Strength burn", color: "hsl(162 72% 40%)" },
 } as const
+
 
 const WEEKLY_WORKOUT_GOAL = 5
 const WEEKLY_STEPS_GOAL = 70_000

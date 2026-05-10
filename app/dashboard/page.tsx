@@ -39,130 +39,140 @@ export default function DashboardHomePage() {
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-px bg-border border border-border">
-        <div className="bg-background p-5 md:p-7 relative">
+        <div className="bg-background p-5 md:p-7 relative group transition-colors hover:bg-amber-50/30">
           <Footprints
-            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
-            strokeWidth={1.25}
+            className="absolute right-4 top-4 h-5 w-5 text-amber-500/20 group-hover:text-amber-500/40 transition-colors"
+            strokeWidth={1.5}
             aria-hidden
           />
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-            Today · Steps
+          <p className="text-[11px] tracking-[0.2em] uppercase text-amber-700/70 mb-3 font-medium">
+            Steps
           </p>
-          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+          <p className="text-2xl md:text-4xl font-light tabular-nums tracking-tight text-amber-900">
             {today.steps.toLocaleString()}
           </p>
-          <div className="mt-4 h-1 bg-secondary overflow-hidden">
+          <div className="mt-4 h-1.5 bg-amber-100 overflow-hidden rounded-full">
             <div
-              className="h-full bg-foreground/80 transition-all"
+              className="h-full bg-amber-500 transition-all duration-1000"
               style={{
                 width: `${Math.min(100, Math.round((today.steps / 12000) * 100))}%`,
               }}
             />
           </div>
-          <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
-            vs 12k pace
+          <p className="text-[10px] text-amber-700/60 mt-2 uppercase tracking-wide font-medium">
+            {Math.round((today.steps / 12000) * 100)}% of goal
           </p>
         </div>
 
-        <div className="bg-background p-5 md:p-7 relative">
+
+        <div className="bg-background p-5 md:p-7 relative group transition-colors hover:bg-orange-50/30">
           <Flame
-            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
-            strokeWidth={1.25}
+            className="absolute right-4 top-4 h-5 w-5 text-orange-500/20 group-hover:text-orange-500/40 transition-colors"
+            strokeWidth={1.5}
             aria-hidden
           />
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-            Today · Burn
+          <p className="text-[11px] tracking-[0.2em] uppercase text-orange-700/70 mb-3 font-medium">
+            Energy
           </p>
-          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+          <p className="text-2xl md:text-4xl font-light tabular-nums tracking-tight text-orange-900">
             {today.caloriesBurned}
-            <span className="text-sm text-muted-foreground ml-1 font-normal">kcal</span>
+            <span className="text-sm text-orange-600/60 ml-1 font-normal tracking-normal">kcal</span>
           </p>
-          <div className="mt-4 h-1 bg-secondary overflow-hidden">
+          <div className="mt-4 h-1.5 bg-orange-100 overflow-hidden rounded-full">
             <div
-              className="h-full bg-foreground/60 transition-all"
+              className="h-full bg-orange-500 transition-all duration-1000"
               style={{
                 width: `${Math.min(100, Math.round((today.caloriesBurned / 600) * 100))}%`,
               }}
             />
           </div>
-          <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
-            vs 600 kcal
+          <p className="text-[10px] text-orange-700/60 mt-2 uppercase tracking-wide font-medium">
+            Active burn
           </p>
         </div>
 
-        <div className="bg-background p-5 md:p-7 relative">
+
+        <div className="bg-background p-5 md:p-7 relative group transition-colors hover:bg-sky-50/30">
           <Droplets
-            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
-            strokeWidth={1.25}
+            className="absolute right-4 top-4 h-5 w-5 text-sky-500/20 group-hover:text-sky-500/40 transition-colors"
+            strokeWidth={1.5}
             aria-hidden
           />
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-            Today · Water
+          <p className="text-[11px] tracking-[0.2em] uppercase text-sky-700/70 mb-3 font-medium">
+            Hydration
           </p>
-          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+          <p className="text-2xl md:text-4xl font-light tabular-nums tracking-tight text-sky-900">
             {(hydration / 1000).toFixed(1)}
-            <span className="text-sm text-muted-foreground ml-1 font-normal">L</span>
+            <span className="text-sm text-sky-600/60 ml-1 font-normal tracking-normal">L</span>
           </p>
-          <div className="mt-4 h-1 bg-secondary overflow-hidden">
+          <div className="mt-4 h-1.5 bg-sky-100 overflow-hidden rounded-full">
             <div
-              className="h-full bg-blue-500/60 transition-all"
+              className="h-full bg-sky-500 transition-all duration-1000"
               style={{
                 width: `${Math.min(100, Math.round((hydration / hydrationGoal) * 100))}%`,
               }}
             />
           </div>
-          <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
+          <p className="text-[10px] text-sky-700/60 mt-2 uppercase tracking-wide font-medium">
             Goal: {(hydrationGoal / 1000).toFixed(1)}L
           </p>
         </div>
 
-        <div className="bg-background p-5 md:p-7 relative">
+
+        <div className="bg-background p-5 md:p-7 relative group transition-colors hover:bg-indigo-50/30">
           <Scale
-            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
-            strokeWidth={1.25}
+            className="absolute right-4 top-4 h-5 w-5 text-indigo-500/20 group-hover:text-indigo-500/40 transition-colors"
+            strokeWidth={1.5}
             aria-hidden
           />
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-            Current Weight
+          <p className="text-[11px] tracking-[0.2em] uppercase text-indigo-700/70 mb-3 font-medium">
+            Weight
           </p>
-          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+          <p className="text-2xl md:text-4xl font-light tabular-nums tracking-tight text-indigo-900">
             {weight ?? "—"}
-            {weight && <span className="text-sm text-muted-foreground ml-1 font-normal">kg</span>}
+            {weight && <span className="text-sm text-indigo-600/60 ml-1 font-normal tracking-normal">kg</span>}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">
-            {weight ? "Latest entry." : "Log in Progress."}
+          <p className="text-[10px] text-indigo-700/60 mt-4 uppercase tracking-wide font-medium">
+            {weight ? "Latest entry" : "No data"}
           </p>
         </div>
 
-        <div className="bg-background p-5 md:p-7 relative">
+
+        <div className="bg-background p-5 md:p-7 relative group transition-colors hover:bg-emerald-50/30">
           <LayoutList
-            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
-            strokeWidth={1.25}
+            className="absolute right-4 top-4 h-5 w-5 text-emerald-500/20 group-hover:text-emerald-500/40 transition-colors"
+            strokeWidth={1.5}
             aria-hidden
           />
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-            Week · Burn
+          <p className="text-[11px] tracking-[0.2em] uppercase text-emerald-700/70 mb-3 font-medium">
+            Weekly
           </p>
-          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+          <p className="text-2xl md:text-4xl font-light tabular-nums tracking-tight text-emerald-900">
             {week.totalCaloriesBurned}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">7-day total.</p>
+          <p className="text-[10px] text-emerald-700/60 mt-4 uppercase tracking-wide font-medium">
+            Total kcal
+          </p>
         </div>
 
-        <div className="bg-background p-5 md:p-7 relative">
+
+        <div className="bg-background p-5 md:p-7 relative group transition-colors hover:bg-violet-50/30">
           <Dumbbell
-            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
-            strokeWidth={1.25}
+            className="absolute right-4 top-4 h-5 w-5 text-violet-500/20 group-hover:text-violet-500/40 transition-colors"
+            strokeWidth={1.5}
             aria-hidden
           />
-          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-            Week · Count
+          <p className="text-[11px] tracking-[0.2em] uppercase text-violet-700/70 mb-3 font-medium">
+            Sessions
           </p>
-          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+          <p className="text-2xl md:text-4xl font-light tabular-nums tracking-tight text-violet-900">
             {week.workoutsCompleted}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">Sessions done.</p>
+          <p className="text-[10px] text-violet-700/60 mt-4 uppercase tracking-wide font-medium">
+            This week
+          </p>
         </div>
+
       </div>
 
 
