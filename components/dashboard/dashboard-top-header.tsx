@@ -68,11 +68,13 @@ export function DashboardTopHeader({
   return (
     <header
       className={cn(
-        "flex shrink-0 items-center justify-between gap-3 sticky top-0 z-30 border-b px-4 py-3 md:px-6 lg:px-8 xl:px-10 md:py-3.5",
-        "bg-background/95 text-foreground border-border/60 backdrop-blur-sm",
+        "flex shrink-0 items-center justify-between gap-3 px-4 py-3 md:px-6 lg:px-8 xl:px-10 md:py-3.5",
+        "bg-background text-foreground border-none",
         "dark:bg-black dark:text-zinc-100 dark:border-white/10",
       )}
     >
+
+
 
       <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-4 md:flex-initial">
         {mobileMenu ? <div className="flex shrink-0 items-center md:hidden">{mobileMenu}</div> : null}
