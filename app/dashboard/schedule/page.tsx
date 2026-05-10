@@ -4,6 +4,7 @@ import { useMemo, useReducer, useState } from "react"
 import { ChevronLeft, ChevronRight, ExternalLink, Lightbulb, Trash2 } from "lucide-react"
 import Link from "next/link"
 
+import { AiAutomationCta } from "@/components/dashboard/ai-plan-automation"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { AsideNote } from "@/components/dashboard/aside-note"
 import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
@@ -18,7 +19,9 @@ import {
   getWeekDayKeys,
   removeScheduleEntry,
 } from "@/lib/fitpal-schedule"
-import { WORKOUT_CATALOG, formatLocalDay } from "@/lib/fitpal-workouts"
+import { db } from "@/lib/db"
+import { formatLocalDay } from "@/lib/fitpal-workouts"
+
 import { cn } from "@/lib/utils"
 
 function parseDayLabel(iso: string) {
@@ -93,6 +96,8 @@ export default function SchedulePage() {
         title="Plan your week"
         description="Week view, times sorted per day. Optional link to a catalog workout. Saved in this browser."
       />
+
+      <AiAutomationCta label="Plan the current calendar week with AI →" />
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-6 border-b border-border">
         <div>
@@ -248,11 +253,12 @@ export default function SchedulePage() {
                   defaultValue=""
                 >
                   <option value="">None — custom only</option>
-                  {WORKOUT_CATALOG.map((w) => (
+                  {db.workouts.getAll().map((w) => (
                     <option key={w.id} value={w.id}>
                       {w.name}
                     </option>
                   ))}
+
                 </select>
               </div>
               <Button type="submit" className="rounded-none w-full sm:w-auto">

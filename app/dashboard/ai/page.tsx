@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Crosshair, Dumbbell, Loader2, MessageSquare, Send, Sparkles, Trash2, UtensilsCrossed } from "lucide-react"
 
+import { AiPlanAutomation } from "@/components/dashboard/ai-plan-automation"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Badge } from "@/components/ui/badge"
@@ -301,6 +302,13 @@ export default function AiPage() {
           ) : null}
         </CardContent>
       </Card>
+
+      <AiPlanAutomation
+        userId={user.id}
+        userName={user.name}
+        goalKey={activeGoal}
+        groqConfigured={groqConfigured}
+      />
 
       <div className="border border-border bg-secondary/35 px-5 py-5 md:px-7 md:py-6 mb-9 flex gap-4 items-start">
         <Sparkles className="h-4 w-4 shrink-0 text-foreground/35 mt-1" strokeWidth={1.5} aria-hidden />

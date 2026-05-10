@@ -1,3 +1,5 @@
+import { db } from "./db"
+
 /** Demo nutrition logging — localStorage only. */
 
 export type MealType = "breakfast" | "lunch" | "dinner" | "snack"
@@ -9,25 +11,6 @@ export type MealDefinition = {
   type: MealType
 }
 
-export const MEAL_CATALOG: MealDefinition[] = [
-  { id: "oats-berry", name: "Oats with berries", calories: 320, type: "breakfast" },
-  { id: "eggs-toast", name: "Eggs & wholegrain toast", calories: 380, type: "breakfast" },
-  { id: "yogurt-granola", name: "Greek yogurt & granola", calories: 290, type: "breakfast" },
-  { id: "smoothie-green", name: "Green protein smoothie", calories: 260, type: "breakfast" },
-  { id: "chicken-rice", name: "Chicken bowl & rice", calories: 520, type: "lunch" },
-  { id: "salmon-salad", name: "Salmon salad", calories: 440, type: "lunch" },
-  { id: "turkey-wrap", name: "Turkey wholemeal wrap", calories: 410, type: "lunch" },
-  { id: "lentil-soup", name: "Lentil soup & bread", calories: 360, type: "lunch" },
-  { id: "steak-veg", name: "Steak & roasted vegetables", calories: 620, type: "dinner" },
-  { id: "pasta-primavera", name: "Pasta primavera", calories: 540, type: "dinner" },
-  { id: "tofu-stirfry", name: "Tofu stir-fry & rice", calories: 480, type: "dinner" },
-  { id: "fish-tacos", name: "Grilled fish tacos", calories: 450, type: "dinner" },
-  { id: "apple-nuts", name: "Apple & mixed nuts", calories: 180, type: "snack" },
-  { id: "protein-bar", name: "Protein bar", calories: 200, type: "snack" },
-  { id: "rice-cakes", name: "Rice cakes & hummus", calories: 160, type: "snack" },
-  { id: "cottage-fruit", name: "Cottage cheese & fruit", calories: 220, type: "snack" },
-]
-
 export type MealPlan = {
   id: string
   name: string
@@ -35,26 +18,6 @@ export type MealPlan = {
   mealIds: string[]
 }
 
-export const MEAL_PLANS: MealPlan[] = [
-  {
-    id: "balanced",
-    name: "Balanced training day",
-    description: "Moderate carbs and protein spread across the day.",
-    mealIds: ["oats-berry", "chicken-rice", "tofu-stirfry", "apple-nuts"],
-  },
-  {
-    id: "high-protein",
-    name: "Higher protein",
-    description: "Extra protein for recovery-focused days.",
-    mealIds: ["eggs-toast", "salmon-salad", "steak-veg", "cottage-fruit", "protein-bar"],
-  },
-  {
-    id: "light-day",
-    name: "Lighter day",
-    description: "Lower density — good with a short workout or rest.",
-    mealIds: ["smoothie-green", "lentil-soup", "fish-tacos", "rice-cakes"],
-  },
-]
 
 export type NutritionLogEntry = {
   id: string
@@ -65,7 +28,8 @@ export type NutritionLogEntry = {
   loggedAt: string
 }
 
-const nutritionKey = (userId: string) => `fitpal_nutrition_${userId}`
+const nutritionKey = (userId: string) => db.user.keys.nutrition(userId)
+
 
 type DayMap = Record<string, NutritionLogEntry[]>
 
@@ -91,8 +55,9 @@ function newEntryId() {
 }
 
 export function getMealById(id: string) {
-  return MEAL_CATALOG.find((m) => m.id === id) ?? null
+  return db.nutrition.getMealById(id)
 }
+
 
 export function getEntriesForDay(userId: string, day: string): NutritionLogEntry[] {
   const map = readMap(userId)
@@ -123,6 +88,12 @@ export function addMealToDay(userId: string, day: string, mealId: string): Nutri
   return entry
 }
 
+export function clearDayNutrition(userId: string, day: string) {
+  const map = readMap(userId)
+  delete map[day]
+  writeMap(userId, map)
+}
+
 export function removeEntryFromDay(userId: string, day: string, entryId: string) {
   const map = readMap(userId)
   if (!map[day]) return
@@ -132,7 +103,8 @@ export function removeEntryFromDay(userId: string, day: string, entryId: string)
 }
 
 export function applyMealPlanToDay(userId: string, day: string, planId: string): number {
-  const plan = MEAL_PLANS.find((p) => p.id === planId)
+  const plan = db.nutrition.getPlanById(planId)
+
   if (!plan) return 0
   let added = 0
   for (const mealId of plan.mealIds) {

@@ -8,15 +8,17 @@ import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { db } from "@/lib/db"
 import {
-  WORKOUT_CATALOG,
   type WorkoutCategory,
   getWorkoutById,
   getWorkoutSessions,
 } from "@/lib/fitpal-workouts"
 
+
 function WorkoutTile({ workoutId }: { workoutId: string }) {
-  const w = WORKOUT_CATALOG.find((x) => x.id === workoutId)
+  const w = db.workouts.getById(workoutId)
+
   if (!w) return null
   return (
     <Link
@@ -64,7 +66,8 @@ function WorkoutTile({ workoutId }: { workoutId: string }) {
 }
 
 function CategoryPlans({ category }: { category: WorkoutCategory }) {
-  const ids = WORKOUT_CATALOG.filter((w) => w.category === category).map((w) => w.id)
+  const ids = db.workouts.getAll().filter((w) => w.category === category).map((w) => w.id)
+
   const blurb =
     category === "cardio"
       ? "Intervals, steady-state, and machines that elevate heart rate — open a tile to see the full brief and log your session."

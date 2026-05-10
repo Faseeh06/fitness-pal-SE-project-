@@ -1,6 +1,9 @@
+import { db } from "./db"
+
 /** Body weight log (kg) — localStorage. */
 
-const weightKey = (userId: string) => `fitpal_weight_${userId}`
+const weightKey = (userId: string) => db.user.keys.weight(userId)
+
 
 type DayMap = Record<string, number>
 

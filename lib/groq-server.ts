@@ -27,12 +27,25 @@ export function getGroqModel(): string {
 
 export type GroqMessage = { role: "system" | "user" | "assistant"; content: string }
 
-export async function groqChat(messages: GroqMessage[]): Promise<string> {
+export async function groqChat(
+  messages: GroqMessage[],
+  options?: { jsonObject?: boolean; temperature?: number; maxTokens?: number },
+): Promise<string> {
   const key = getGroqApiKey()
   if (!key) {
     throw new Error("GROQ_API_KEY is not set")
   }
   const model = getGroqModel()
+
+  const payload: Record<string, unknown> = {
+    model,
+    messages,
+    max_tokens: options?.maxTokens ?? 1024,
+    temperature: options?.temperature ?? 0.55,
+  }
+  if (options?.jsonObject) {
+    payload.response_format = { type: "json_object" }
+  }
 
   const res = await fetch(GROQ_CHAT_URL, {
     method: "POST",
@@ -41,12 +54,7 @@ export async function groqChat(messages: GroqMessage[]): Promise<string> {
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      model,
-      messages,
-      max_tokens: 1024,
-      temperature: 0.55,
-    }),
+    body: JSON.stringify(payload),
   })
 
   const raw = await res.text()

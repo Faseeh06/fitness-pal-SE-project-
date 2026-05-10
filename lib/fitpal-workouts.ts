@@ -1,3 +1,4 @@
+import { db } from "./db"
 import { DEMO_CREDENTIALS } from "@/lib/fitpal-auth"
 
 export type WorkoutCategory = "cardio" | "strength"
@@ -13,66 +14,6 @@ export type WorkoutDefinition = {
   imageUrl: string
 }
 
-/** Stable Unsplash URLs (`auto=format` helps avoid broken loads across environments). */
-const u = (photoId: string, w: number) =>
-  `https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=${w}&q=82`
-
-export const WORKOUT_CATALOG: WorkoutDefinition[] = [
-  {
-    id: "run-easy",
-    name: "Easy run",
-    category: "cardio",
-    description: "Steady aerobic pace — conversational intensity.",
-    defaultDurationMinutes: 30,
-    defaultCaloriesBurned: 280,
-    imageUrl: u("photo-1571019614242-c5c5dee9f50b", 1200),
-  },
-  {
-    id: "hiit-core",
-    name: "HIIT core circuit",
-    category: "cardio",
-    description: "Short work intervals with brief recovery windows.",
-    defaultDurationMinutes: 25,
-    defaultCaloriesBurned: 320,
-    imageUrl: u("photo-1517836357463-d25dfeac3438", 1200),
-  },
-  {
-    id: "row-steady",
-    name: "Rowing endurance",
-    category: "cardio",
-    description: "Consistent stroke rate and even splits.",
-    defaultDurationMinutes: 35,
-    defaultCaloriesBurned: 300,
-    imageUrl: u("photo-1576678927484-cc907957088c", 1200),
-  },
-  {
-    id: "upper-push",
-    name: "Upper push strength",
-    category: "strength",
-    description: "Pressing patterns with controlled tempo.",
-    defaultDurationMinutes: 45,
-    defaultCaloriesBurned: 220,
-    imageUrl: u("photo-1581009146145-b5ef050c2e1e", 1200),
-  },
-  {
-    id: "lower-compound",
-    name: "Lower-body compound",
-    category: "strength",
-    description: "Squat and hinge emphasis — full range.",
-    defaultDurationMinutes: 50,
-    defaultCaloriesBurned: 260,
-    imageUrl: u("photo-1434682881908-b43fa046c57b", 1200),
-  },
-  {
-    id: "full-body",
-    name: "Full-body basics",
-    category: "strength",
-    description: "Compound lifts covering major patterns.",
-    defaultDurationMinutes: 40,
-    defaultCaloriesBurned: 240,
-    imageUrl: u("photo-1534438327276-14e5300c3a48", 1200),
-  },
-]
 
 export type CompletedWorkoutSession = {
   id: string
@@ -82,7 +23,8 @@ export type CompletedWorkoutSession = {
   caloriesBurned: number
 }
 
-const STEPS_KEY = "fitpal_daily_steps"
+const STEPS_KEY = db.user.keys.steps
+
 
 type StepsByUser = Record<string, Record<string, number>>
 
@@ -115,8 +57,9 @@ export function getStepsForDay(userId: string, day: string): number {
 }
 
 function sessionsStorageKey(userId: string) {
-  return `fitpal_workout_sessions_${userId}`
+  return db.user.keys.sessions(userId)
 }
+
 
 function readSessionsRaw(userId: string): CompletedWorkoutSession[] {
   if (typeof window === "undefined") return []
@@ -135,12 +78,13 @@ function writeSessionsRaw(userId: string, sessions: CompletedWorkoutSession[]) {
 }
 
 export function getWorkoutById(id: string) {
-  return WORKOUT_CATALOG.find((w) => w.id === id) ?? null
+  return db.workouts.getById(id)
 }
 
 export function getWorkoutsByCategory(category: WorkoutCategory) {
-  return WORKOUT_CATALOG.filter((w) => w.category === category)
+  return db.workouts.getAll().filter((w) => w.category === category)
 }
+
 
 export function getWorkoutSessions(userId: string): CompletedWorkoutSession[] {
   return readSessionsRaw(userId).sort(

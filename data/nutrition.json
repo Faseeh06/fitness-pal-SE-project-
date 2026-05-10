@@ -1,0 +1,50 @@
+{
+  "meals": [
+    { "id": "oats-berry", "name": "Oats with berries", "calories": 320, "type": "breakfast" },
+    { "id": "eggs-toast", "name": "Eggs & wholegrain toast", "calories": 380, "type": "breakfast" },
+    { "id": "yogurt-granola", "name": "Greek yogurt & granola", "calories": 290, "type": "breakfast" },
+    { "id": "smoothie-green", "name": "Green protein smoothie", "calories": 260, "type": "breakfast" },
+    { "id": "chicken-rice", "name": "Chicken bowl & rice", "calories": 520, "type": "lunch" },
+    { "id": "salmon-salad", "name": "Salmon salad", "calories": 440, "type": "lunch" },
+    { "id": "turkey-wrap", "name": "Turkey wholemeal wrap", "calories": 410, "type": "lunch" },
+    { "id": "lentil-soup", "name": "Lentil soup & bread", "calories": 360, "type": "lunch" },
+    { "id": "steak-veg", "name": "Steak & roasted vegetables", "calories": 620, "type": "dinner" },
+    { "id": "pasta-primavera", "name": "Pasta primavera", "calories": 540, "type": "dinner" },
+    { "id": "tofu-stirfry", "name": "Tofu stir-fry & rice", "calories": 480, "type": "dinner" },
+    { "id": "fish-tacos", "name": "Grilled fish tacos", "calories": 450, "type": "dinner" },
+    { "id": "apple-nuts", "name": "Apple & mixed nuts", "calories": 180, "type": "snack" },
+    { "id": "protein-bar", "name": "Protein bar", "calories": 200, "type": "snack" },
+    { "id": "rice-cakes", "name": "Rice cakes & hummus", "calories": 160, "type": "snack" },
+    { "id": "cottage-fruit", "name": "Cottage cheese & fruit", "calories": 220, "type": "snack" },
+    { "id": "almonds", "name": "Handful of almonds", "calories": 160, "type": "snack" },
+    { "id": "hummus-veg", "name": "Hummus & carrot sticks", "calories": 140, "type": "snack" }
+  ],
+
+  "plans": [
+    {
+      "id": "balanced",
+      "name": "Balanced training day",
+      "description": "Moderate carbs and protein spread across the day.",
+      "mealIds": ["oats-berry", "chicken-rice", "tofu-stirfry", "apple-nuts"]
+    },
+    {
+      "id": "high-protein",
+      "name": "Higher protein",
+      "description": "Extra protein for recovery-focused days.",
+      "mealIds": ["eggs-toast", "salmon-salad", "steak-veg", "cottage-fruit", "protein-bar"]
+    },
+    {
+      "id": "light-day",
+      "name": "Lighter day",
+      "description": "Lower density — good with a short workout or rest.",
+      "mealIds": ["smoothie-green", "lentil-soup", "fish-tacos", "rice-cakes"]
+    },
+    {
+      "id": "vegan",
+      "name": "Plant-based day",
+      "description": "Entirely vegan meals focused on whole foods.",
+      "mealIds": ["oats-berry", "lentil-soup", "tofu-stirfry", "hummus-veg"]
+    }
+  ]
+}
+

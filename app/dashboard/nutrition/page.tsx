@@ -3,6 +3,7 @@
 import { useMemo, useReducer } from "react"
 import { Plus, Trash2 } from "lucide-react"
 
+import { AiAutomationCta } from "@/components/dashboard/ai-plan-automation"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Badge } from "@/components/ui/badge"
@@ -10,9 +11,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { db } from "@/lib/db"
 import {
-  MEAL_CATALOG,
-  MEAL_PLANS,
   type MealType,
   addMealToDay,
   applyMealPlanToDay,
@@ -20,6 +20,7 @@ import {
   getEntriesForDay,
   removeEntryFromDay,
 } from "@/lib/fitpal-nutrition"
+
 import { formatLocalDay } from "@/lib/fitpal-workouts"
 
 const typeOrder: MealType[] = ["breakfast", "lunch", "dinner", "snack"]
@@ -33,15 +34,19 @@ const typeLabel: Record<MealType, string> = {
 
 export default function NutritionPage() {
   const user = useDashboardUser()
-  const [, refresh] = useReducer((n: number) => n + 1, 0)
+  const [tick, refresh] = useReducer((n: number) => n + 1, 0)
   const today = formatLocalDay()
 
   const entries = useMemo(() => {
     if (!user) return []
     return getEntriesForDay(user.id, today)
-  }, [user, today, refresh])
+  }, [user, today, tick])
 
-  const total = user ? getCaloriesConsumedForDay(user.id, today) : 0
+  const total = useMemo(() => {
+    if (!user) return 0
+    return getCaloriesConsumedForDay(user.id, today)
+  }, [user, today, tick])
+
 
   if (!user) return null
 
@@ -67,6 +72,8 @@ export default function NutritionPage() {
         title="Fuel your day"
         description="Add meals or a sample plan — calories flow to Progress and charts."
       />
+
+      <AiAutomationCta label="Generate a day’s meals with AI →" />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
         <div className="space-y-8">
@@ -94,11 +101,12 @@ export default function NutritionPage() {
                       {typeLabel[type]}
                     </h2>
                     <span className="text-[11px] text-muted-foreground tabular-nums">
-                      {MEAL_CATALOG.filter((m) => m.type === type).length} items
+                      {db.nutrition.getMeals().filter((m) => m.type === type).length} items
                     </span>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">
-                    {MEAL_CATALOG.filter((m) => m.type === type).map((m) => (
+                    {db.nutrition.getMeals().filter((m) => m.type === type).map((m) => (
+
                       <div
                         key={m.id}
                         className="flex flex-col border border-border bg-background p-4 md:p-5 gap-3"
@@ -128,7 +136,8 @@ export default function NutritionPage() {
 
             <TabsContent value="plans" className="mt-8 focus-visible:outline-none">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {MEAL_PLANS.map((plan) => (
+                {db.nutrition.getPlans().map((plan) => (
+
                   <Card key={plan.id} className="rounded-none border-border">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-base font-light tracking-tight">{plan.name}</CardTitle>
@@ -137,7 +146,8 @@ export default function NutritionPage() {
                     <CardContent className="space-y-4">
                       <ul className="text-xs text-muted-foreground space-y-1.5">
                         {plan.mealIds.map((id) => {
-                          const m = MEAL_CATALOG.find((x) => x.id === id)
+                          const m = db.nutrition.getMealById(id)
+
                           return (
                             <li key={id} className="flex justify-between gap-2">
                               <span>{m?.name ?? id}</span>

@@ -1,4 +1,7 @@
+import { db } from "./db"
+
 /** Demo-only auth helpers — passwords stored in plain text in localStorage. Do not use in production. */
+
 
 /** Pre-filled account for quick testing — merged into localStorage on first use. */
 export const DEMO_CREDENTIALS = {
@@ -22,8 +25,9 @@ export type FitPalUser = {
 
 export type FitPalSessionUser = Omit<FitPalUser, 'password'>
 
-const USERS_KEY = 'fitpal_users'
-const SESSION_KEY = 'fitpal_session'
+const USERS_KEY = db.user.keys.users
+const SESSION_KEY = db.user.keys.session
+
 
 function readUsers(): Record<string, FitPalUser> {
   if (typeof window === 'undefined') return {}

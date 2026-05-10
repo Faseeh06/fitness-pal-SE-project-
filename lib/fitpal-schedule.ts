@@ -1,4 +1,6 @@
 import { formatLocalDay } from "@/lib/fitpal-workouts"
+import { db } from "./db"
+
 
 export type ScheduleEntry = {
   id: string
@@ -11,7 +13,8 @@ export type ScheduleEntry = {
   workoutId?: string
 }
 
-const scheduleKey = (userId: string) => `fitpal_schedule_${userId}`
+const scheduleKey = (userId: string) => db.user.keys.schedule(userId)
+
 
 function readList(userId: string): ScheduleEntry[] {
   if (typeof window === "undefined") return []
@@ -96,5 +99,12 @@ export function addScheduleEntry(
 
 export function removeScheduleEntry(userId: string, entryId: string) {
   const list = readList(userId).filter((e) => e.id !== entryId)
+  writeList(userId, list)
+}
+
+/** Remove every schedule row whose date is in `dates` (e.g. before replacing a week with AI). */
+export function clearScheduleForDates(userId: string, dates: string[]) {
+  const drop = new Set(dates)
+  const list = readList(userId).filter((e) => !drop.has(e.date))
   writeList(userId, list)
 }

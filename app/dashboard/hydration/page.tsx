@@ -3,6 +3,7 @@
 import { useMemo, useReducer } from "react"
 import { Droplets } from "lucide-react"
 
+import { AiAutomationCta } from "@/components/dashboard/ai-plan-automation"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Button } from "@/components/ui/button"
@@ -84,6 +85,8 @@ export default function HydrationPage() {
         title="Stay topped up"
         description={`Water in ml vs your goal (default ${DEFAULT_DAILY_GOAL_ML.toLocaleString()} ml).`}
       />
+
+      <AiAutomationCta label="Set a smart daily goal with AI →" />
 
       <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <Card className="rounded-none border-border xl:col-span-2">

@@ -1,8 +1,11 @@
+import { db } from "./db"
+
 /** Demo hydration — millilitres (ml) in localStorage. */
 
 export const DEFAULT_DAILY_GOAL_ML = 2500
 
-const hydrationKey = (userId: string) => `fitpal_hydration_${userId}`
+const hydrationKey = (userId: string) => db.user.keys.hydration(userId)
+
 
 type DayMap = Record<string, number>
 
@@ -46,7 +49,7 @@ export function setWaterMlForDay(userId: string, day: string, totalMl: number) {
 export function getHydrationGoalMl(userId: string): number {
   if (typeof window === "undefined") return DEFAULT_DAILY_GOAL_ML
   try {
-    const raw = window.localStorage.getItem(`fitpal_hydration_goal_${userId}`)
+    const raw = window.localStorage.getItem(db.user.keys.hydrationGoal(userId))
     if (!raw) return DEFAULT_DAILY_GOAL_ML
     const n = Number.parseInt(raw, 10)
     return Number.isFinite(n) && n >= 500 && n <= 8000 ? n : DEFAULT_DAILY_GOAL_ML
@@ -57,5 +60,6 @@ export function getHydrationGoalMl(userId: string): number {
 
 export function setHydrationGoalMl(userId: string, ml: number) {
   const v = Math.max(500, Math.min(8000, Math.round(ml)))
-  window.localStorage.setItem(`fitpal_hydration_goal_${userId}`, String(v))
+  window.localStorage.setItem(db.user.keys.hydrationGoal(userId), String(v))
 }
+
