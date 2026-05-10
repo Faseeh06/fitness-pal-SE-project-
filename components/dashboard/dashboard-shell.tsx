@@ -209,8 +209,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <DashboardUserProvider user={user}>
-      <div className="min-h-screen flex bg-background">
-        <aside className="hidden md:flex w-[260px] shrink-0 border-r border-border flex-col py-8 px-4 bg-card/50 dark:bg-card/80">
+      <div className="min-h-screen flex bg-background text-foreground">
+        <aside className="hidden md:flex w-[260px] shrink-0 border-r border-border flex-col py-8 px-4 bg-background transition-colors">
           {sidebar()}
         </aside>
 
