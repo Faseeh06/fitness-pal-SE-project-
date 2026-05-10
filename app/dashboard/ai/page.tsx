@@ -17,7 +17,13 @@ import {
   getSuggestionPack,
   parseGoalFromProfile,
 } from "@/lib/fitpal-ai-suggestions"
+import { addWaterMl } from "@/lib/fitpal-hydration"
+import { addMealToDay } from "@/lib/fitpal-nutrition"
+import { setWeightKgForDay } from "@/lib/fitpal-progress-weight"
+import { addScheduleEntry } from "@/lib/fitpal-schedule"
+import { addWorkoutSession, formatLocalDay, getWorkoutById } from "@/lib/fitpal-workouts"
 import { cn } from "@/lib/utils"
+
 
 type SourceMode = "profile" | FitnessGoalKey
 
@@ -32,6 +38,8 @@ export default function AiPage() {
   const [groqErr, setGroqErr] = useState<string | null>(null)
   const [groqModel, setGroqModel] = useState<string | null>(null)
   const [groqConfigured, setGroqConfigured] = useState<boolean | null>(null)
+  const [executedActions, setExecutedActions] = useState<string[]>([])
+
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -98,7 +106,65 @@ export default function AiPage() {
         return
       }
       if (data.text) {
-        setChat((c) => [...c, { role: "assistant", content: data.text }])
+        let cleanContent = data.text
+        const actionMatch = /ACTION_START([\s\S]*?)ACTION_END/.exec(data.text)
+
+        if (actionMatch) {
+          cleanContent = data.text.replace(/ACTION_START[\s\S]*?ACTION_END/, "").trim()
+          try {
+            const parsed = JSON.parse(actionMatch[1]!) as {
+              actions: {
+                type: string
+                mealId?: string
+                workoutId?: string
+                duration?: number
+                calories?: number
+                date?: string
+                time?: string
+                weight?: number
+                amountMl?: number
+              }[]
+            }
+            if (parsed.actions) {
+              const newExecuted: string[] = []
+              const today = formatLocalDay()
+
+              for (const a of parsed.actions) {
+                if (a.type === "ADD_MEAL" && a.mealId) {
+                  addMealToDay(user.id, today, a.mealId)
+                  newExecuted.push(`Added meal: ${a.mealId}`)
+                } else if (a.type === "ADD_WORKOUT" && a.workoutId) {
+                  const w = getWorkoutById(a.workoutId)
+                  addWorkoutSession(user.id, {
+                    workoutId: a.workoutId,
+                    durationMinutes: a.duration ?? w?.defaultDurationMinutes ?? 30,
+                    caloriesBurned: a.calories ?? w?.defaultCaloriesBurned ?? 200,
+                  })
+                  newExecuted.push(`Logged workout: ${w?.name ?? a.workoutId}`)
+                } else if (a.type === "SCHEDULE_WORKOUT" && a.workoutId) {
+                  const w = getWorkoutById(a.workoutId)
+                  addScheduleEntry(user.id, {
+                    date: a.date ?? today,
+                    time: a.time ?? "08:00",
+                    title: w?.name ?? "Workout",
+                    workoutId: a.workoutId,
+                  })
+                  newExecuted.push(`Scheduled: ${w?.name ?? a.workoutId} on ${a.date ?? today}`)
+                } else if (a.type === "UPDATE_WEIGHT" && a.weight) {
+                  setWeightKgForDay(user.id, today, a.weight)
+                  newExecuted.push(`Updated weight: ${a.weight}kg`)
+                } else if (a.type === "ADD_HYDRATION" && a.amountMl) {
+                  addWaterMl(user.id, today, a.amountMl)
+                  newExecuted.push(`Logged hydration: +${a.amountMl}ml`)
+                }
+              }
+              setExecutedActions((prev) => [...prev, ...newExecuted])
+            }
+          } catch (e) {
+            console.error("Action parse failed", e)
+          }
+        }
+        setChat((c) => [...c, { role: "assistant", content: cleanContent }])
       }
       if (data.model) setGroqModel(data.model)
     } catch {
@@ -109,6 +175,7 @@ export default function AiPage() {
       setGroqLoading(false)
     }
   }
+
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -296,19 +363,32 @@ export default function AiPage() {
           </div>
 
           {groqErr ? (
-            <p className="text-sm text-destructive leading-snug" role="alert">
+            <p className="text-sm text-destructive leading-snug mt-2" role="alert">
               {groqErr}
             </p>
+          ) : null}
+
+          {executedActions.length > 0 ? (
+            <div className="mt-4 p-4 bg-emerald-50/40 border border-emerald-100/50 rounded-none animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+                <p className="font-medium uppercase tracking-[0.2em] text-[9px] text-emerald-800/70">System Updates</p>
+              </div>
+              <div className="space-y-1.5">
+                {executedActions.slice(-5).map((act, idx) => (
+                  <div key={idx} className="flex items-center gap-2.5 text-[11px] text-emerald-900/80">
+                    <span className="h-1 w-1 bg-emerald-400 rounded-full" />
+                    {act}
+                  </div>
+                ))}
+              </div>
+            </div>
           ) : null}
         </CardContent>
       </Card>
 
-      <AiPlanAutomation
-        userId={user.id}
-        userName={user.name}
-        goalKey={activeGoal}
-        groqConfigured={groqConfigured}
-      />
+
+
 
       <div className="border border-border bg-secondary/35 px-5 py-5 md:px-7 md:py-6 mb-9 flex gap-4 items-start">
         <Sparkles className="h-4 w-4 shrink-0 text-foreground/35 mt-1" strokeWidth={1.5} aria-hidden />

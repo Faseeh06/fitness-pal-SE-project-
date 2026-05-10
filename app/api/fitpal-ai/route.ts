@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
-
+import { db } from "@/lib/db"
 import { FITNESS_GOAL_LABEL, type FitnessGoalKey } from "@/lib/fitpal-ai-suggestions"
 import { getGroqApiKey, getGroqModel, groqChat, type GroqMessage } from "@/lib/groq-server"
+
 
 export const dynamic = "force-dynamic"
 
@@ -84,10 +85,45 @@ export async function POST(req: Request) {
       ? b.userName.trim().slice(0, 80)
       : undefined
 
-  const system = `You are FitPal's in-app fitness assistant (demo). Be concise and practical.
+  const system = `You are FitPal's in-app fitness assistant (demo). Be concise, encouraging, and practical.
 User goal: ${goalLabel}.${userProfile ? ` Address them as "${userProfile}" when natural.` : ""}
-Give short paragraphs or bullet lines with "- " when listing. No medical diagnosis or prescriptions.
-If asked something off-topic, answer briefly then steer back to fitness, recovery, or nutrition.`
+
+### CAPABILITIES:
+You can perform actions on behalf of the user. When a user asks to log food, log a workout, schedule something, update weight, or log water, you MUST respond with your normal helpful message AND append a JSON action block.
+
+### ACTION FORMAT:
+Append exactly one block at the end of your response using this format:
+ACTION_START
+{
+  "actions": [
+    { "type": "ADD_MEAL", "mealId": "..." },
+    { "type": "ADD_WORKOUT", "workoutId": "...", "duration": 30, "calories": 200 },
+    { "type": "SCHEDULE_WORKOUT", "workoutId": "...", "date": "YYYY-MM-DD", "time": "HH:MM" },
+    { "type": "UPDATE_WEIGHT", "weight": 75.5 },
+    { "type": "ADD_HYDRATION", "amountMl": 250 }
+  ]
+}
+ACTION_END
+
+### CATALOG CONTEXT (FOR INTERNAL USE ONLY):
+DO NOT repeat the raw catalog strings (e.g. "id|name|type") to the user. Use them to pick the right IDs for your action block.
+
+WORKOUTS:
+${db.workouts.getAll().map(w => `${w.id}|${w.name}|${w.category}|${w.defaultDurationMinutes}min|${w.defaultCaloriesBurned}kcal`).join("\n")}
+
+MEALS:
+${db.nutrition.getMeals().map(m => `${m.id}|${m.name}|${m.type}|${m.calories}kcal`).join("\n")}
+
+### RULES:
+- If logging a meal or workout, only use IDs from the catalogs above.
+- If the user's request is vague (e.g., "I ate an apple"), pick the closest catalog item or ask for clarification.
+- You can combine multiple actions in one block.
+- For scheduling, use YYYY-MM-DD format (today is ${new Date().toISOString().split('T')[0]}).
+- **Presentation**: Be conversational. When suggesting a workout or meal, use its name, not its ID or raw data.
+- **Actions**: When you perform an action (like logging weight or scheduling), inform the user that you've done so in a friendly way.
+- DO NOT show the JSON block to the user; keep it hidden at the very end of your response.`
+
+
 
   try {
     const text = await groqChat([{ role: "system", content: system }, ...history])
