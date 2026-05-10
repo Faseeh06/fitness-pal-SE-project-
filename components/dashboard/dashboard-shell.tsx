@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
@@ -64,12 +65,14 @@ function NavLink({
       href={href}
       onClick={onNavigate}
       className={cn(
-        "group flex items-center gap-3 px-3 py-2.5 text-[13px] tracking-tight transition-colors border border-transparent border-l-2",
+        "group flex items-center gap-3 px-4 py-3 text-[11px] uppercase tracking-[0.2em] font-normal transition-all border-l-2",
         active
-          ? "bg-primary/15 text-primary border-primary border-l-4 font-semibold"
-          : "border-l-transparent text-muted-foreground hover:text-foreground hover:bg-secondary/60",
-
+          ? "bg-primary/5 text-primary border-primary"
+          : "border-transparent text-muted-foreground hover:text-foreground hover:bg-secondary/30",
       )}
+
+
+
     >
       <Icon className="h-4 w-4 shrink-0 opacity-70 group-hover:opacity-100" />
       <span className="flex-1">{label}</span>
@@ -130,25 +133,31 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   const sidebar = (onNavigate?: () => void) => (
     <div className="flex h-full flex-col">
-      <div className="px-3 pb-6 flex items-start gap-3">
-        <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center border border-border bg-foreground text-background text-sm font-medium"
-          aria-hidden
+      <div className="px-4 pb-10">
+        <Link
+          href="/dashboard"
+          onClick={onNavigate}
+          className="flex items-center gap-3 group"
         >
-          {initial}
-        </div>
-        <div className="min-w-0 pt-0.5">
-          <Link
-            href="/dashboard"
-            onClick={onNavigate}
-            className="text-[11px] font-medium tracking-[0.28em] uppercase text-foreground block"
-          >
-            FitPal
-          </Link>
-          <p className="text-xs text-muted-foreground mt-1.5 leading-snug truncate">{user.name}</p>
-        </div>
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden">
+            <Image src="/logo.png" alt="Logo" fill className="object-contain invert dark:invert-0 transition-transform group-hover:scale-110" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[14px] font-black tracking-[0.3em] uppercase text-foreground block leading-none">
+              FitPal
+            </p>
+            <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground mt-2 truncate">
+              Precision Fitness
+            </p>
+          </div>
+        </Link>
       </div>
-      <Separator className="mb-4" />
+
+
+
+      <Separator className="mb-6 bg-border/60" />
+
+
       <nav className="flex flex-1 flex-col gap-0.5 px-1">
         {navItems.map((item) => {
           const active =
@@ -211,9 +220,11 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <DashboardUserProvider user={user}>
       <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground">
-        <aside className="hidden md:flex w-[260px] shrink-0 flex-col py-8 px-4 bg-background transition-colors border-r border-border">
+        <aside className="hidden md:flex w-[260px] shrink-0 flex-col py-10 bg-background/50 backdrop-blur-sm transition-colors border-r border-border/50">
           {sidebar()}
         </aside>
+
+
 
         <div className="flex flex-1 flex-col min-w-0">
           <DashboardTopHeader user={user} mobileMenu={mobileMenu} />

@@ -78,11 +78,9 @@ export function DashboardTopHeader({
 
       <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-4 md:flex-initial">
         {mobileMenu ? <div className="flex shrink-0 items-center md:hidden">{mobileMenu}</div> : null}
-        <div className="min-w-0">
-          <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground">FitPal</p>
-          <p className="truncate text-sm font-medium">Dashboard</p>
-        </div>
       </div>
+
+
 
       <div className="flex shrink-0 items-center gap-1 md:gap-2">
         <ThemeToggle className="text-foreground dark:text-zinc-100 hover:bg-black/5 dark:hover:bg-white/10" />
