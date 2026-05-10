@@ -248,7 +248,7 @@ export default function AiPage() {
         </div>
       </div>
 
-      <Card className="rounded-none border-border mb-10">
+      <Card className="rounded-none border-none bg-white/40 mb-10 shadow-sm">
         <CardHeader className="border-b border-border/70 pb-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2.5">
@@ -297,7 +297,7 @@ export default function AiPage() {
         <CardContent className="pt-5 space-y-4">
           <div
             ref={scrollRef}
-            className="max-h-[min(420px,50vh)] overflow-y-auto border border-border bg-muted/20 px-3 py-3 space-y-3"
+            className="max-h-[min(420px,50vh)] overflow-y-auto border border-border/40 bg-muted/10 px-4 py-4 space-y-4"
           >
             {chat.length === 0 ? (
               <p className="text-[13px] text-muted-foreground text-center py-8 px-2">
@@ -316,14 +316,15 @@ export default function AiPage() {
                 >
                   <div
                     className={cn(
-                      "max-w-[92%] px-3 py-2 text-[13px] leading-relaxed whitespace-pre-wrap",
+                      "max-w-[85%] px-4 py-3 text-[13px] leading-relaxed whitespace-pre-wrap shadow-sm",
                       m.role === "user"
-                        ? "bg-foreground text-background"
-                        : "bg-background border border-border text-muted-foreground",
+                        ? "bg-primary text-primary-foreground font-medium"
+                        : "bg-white border border-border/60 text-foreground",
                     )}
                   >
                     {m.content}
                   </div>
+
                 </div>
               ))
             )}
@@ -390,18 +391,19 @@ export default function AiPage() {
 
 
 
-      <div className="border border-border bg-secondary/35 px-5 py-5 md:px-7 md:py-6 mb-9 flex gap-4 items-start">
-        <Sparkles className="h-4 w-4 shrink-0 text-foreground/35 mt-1" strokeWidth={1.5} aria-hidden />
+      <div className="border-none bg-primary/5 px-5 py-5 md:px-7 md:py-6 mb-9 flex gap-4 items-start shadow-sm">
+        <Sparkles className="h-5 w-5 shrink-0 text-primary/40 mt-1" strokeWidth={1.5} aria-hidden />
         <div>
-          <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground mb-2">Offline summary</p>
-          <h2 className="text-lg md:text-xl font-extralight tracking-tight text-balance max-w-2xl leading-snug">
+          <p className="text-[10px] tracking-[0.22em] uppercase text-primary/60 mb-2 font-bold">Offline summary</p>
+          <h2 className="text-lg md:text-xl font-light tracking-tight text-balance max-w-2xl leading-snug text-primary-foreground/90 mix-blend-multiply">
             {pack.headline}
           </h2>
         </div>
       </div>
 
+
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 mb-10">
-        <Card className="rounded-none border-border md:col-span-2 xl:col-span-1">
+        <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-1 shadow-sm">
           <CardHeader className="border-b border-border/70 pb-4">
             <div className="flex items-center gap-2.5">
               <Dumbbell className="h-4 w-4 text-foreground/40" strokeWidth={1.5} aria-hidden />
@@ -421,7 +423,7 @@ export default function AiPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-none border-border md:col-span-2 xl:col-span-1">
+        <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-1 shadow-sm">
           <CardHeader className="border-b border-border/70 pb-4">
             <div className="flex items-center gap-2.5">
               <UtensilsCrossed className="h-4 w-4 text-foreground/40" strokeWidth={1.5} aria-hidden />
@@ -441,7 +443,7 @@ export default function AiPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-none border-border md:col-span-2 xl:col-span-1">
+        <Card className="rounded-none border-none bg-white/40 md:col-span-2 xl:col-span-1 shadow-sm">
           <CardHeader className="border-b border-border/70 pb-4">
             <div className="flex items-center gap-2.5">
               <Crosshair className="h-4 w-4 text-foreground/40" strokeWidth={1.5} aria-hidden />
