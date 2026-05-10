@@ -67,3 +67,8 @@ export function getWeightSeries(
   }
   return out
 }
+export function getLatestWeightKg(userId: string): number | null {
+  const map = readMap(userId)
+  const entries = Object.entries(map).sort((a, b) => b[0].localeCompare(a[0]))
+  return entries[0] ? entries[0][1] : null
+}

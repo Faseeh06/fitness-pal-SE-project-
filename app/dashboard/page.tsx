@@ -1,13 +1,16 @@
 "use client"
 
 import Link from "next/link"
-import { Apple, ArrowRight, Droplets, Dumbbell, Flame, Footprints, LayoutList } from "lucide-react"
+import { Apple, ArrowRight, Droplets, Dumbbell, Flame, Footprints, LayoutList, Scale } from "lucide-react"
 
 import { DashboardAnalyticsCharts } from "@/components/dashboard/dashboard-analytics-charts"
 import { useDashboardUser } from "@/components/dashboard/dashboard-context"
 import { DashboardPageHero } from "@/components/dashboard/dashboard-page-hero"
 import { Separator } from "@/components/ui/separator"
+import { getHydrationGoalMl, getWaterMlForDay } from "@/lib/fitpal-hydration"
+import { getLatestWeightKg } from "@/lib/fitpal-progress-weight"
 import { formatLocalDay, getWeekSummary } from "@/lib/fitpal-workouts"
+
 
 export default function DashboardHomePage() {
   const user = useDashboardUser()
@@ -21,6 +24,11 @@ export default function DashboardHomePage() {
     steps: 0,
   }
 
+  const weight = getLatestWeightKg(user.id)
+  const hydration = getWaterMlForDay(user.id, todayKey)
+  const hydrationGoal = getHydrationGoalMl(user.id)
+
+
   return (
     <div>
       <DashboardPageHero
@@ -30,7 +38,7 @@ export default function DashboardHomePage() {
         description="Today and weekly totals below; charts follow what you log."
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-px bg-border border border-border">
         <div className="bg-background p-5 md:p-7 relative">
           <Footprints
             className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
@@ -52,9 +60,10 @@ export default function DashboardHomePage() {
             />
           </div>
           <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
-            vs 12k demo pace
+            vs 12k pace
           </p>
         </div>
+
         <div className="bg-background p-5 md:p-7 relative">
           <Flame
             className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
@@ -77,9 +86,54 @@ export default function DashboardHomePage() {
             />
           </div>
           <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
-            vs 600 kcal demo
+            vs 600 kcal
           </p>
         </div>
+
+        <div className="bg-background p-5 md:p-7 relative">
+          <Droplets
+            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
+          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
+            Today · Water
+          </p>
+          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+            {(hydration / 1000).toFixed(1)}
+            <span className="text-sm text-muted-foreground ml-1 font-normal">L</span>
+          </p>
+          <div className="mt-4 h-1 bg-secondary overflow-hidden">
+            <div
+              className="h-full bg-blue-500/60 transition-all"
+              style={{
+                width: `${Math.min(100, Math.round((hydration / hydrationGoal) * 100))}%`,
+              }}
+            />
+          </div>
+          <p className="text-[10px] text-muted-foreground/90 mt-2 uppercase tracking-wide">
+            Goal: {(hydrationGoal / 1000).toFixed(1)}L
+          </p>
+        </div>
+
+        <div className="bg-background p-5 md:p-7 relative">
+          <Scale
+            className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
+            strokeWidth={1.25}
+            aria-hidden
+          />
+          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
+            Current Weight
+          </p>
+          <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
+            {weight ?? "—"}
+            {weight && <span className="text-sm text-muted-foreground ml-1 font-normal">kg</span>}
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">
+            {weight ? "Latest entry." : "Log in Progress."}
+          </p>
+        </div>
+
         <div className="bg-background p-5 md:p-7 relative">
           <LayoutList
             className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
@@ -92,8 +146,9 @@ export default function DashboardHomePage() {
           <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {week.totalCaloriesBurned}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">7-day total kcal.</p>
+          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">7-day total.</p>
         </div>
+
         <div className="bg-background p-5 md:p-7 relative">
           <Dumbbell
             className="absolute right-4 top-4 h-4 w-4 text-foreground/[0.07]"
@@ -101,14 +156,16 @@ export default function DashboardHomePage() {
             aria-hidden
           />
           <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-            Week · Sessions
+            Week · Count
           </p>
           <p className="text-2xl md:text-3xl font-extralight tabular-nums tracking-tight">
             {week.workoutsCompleted}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">Completed workouts.</p>
+          <p className="text-[11px] text-muted-foreground mt-4 leading-snug">Sessions done.</p>
         </div>
       </div>
+
+
 
       <div className="mt-10">
         <DashboardAnalyticsCharts userId={user.id} />
